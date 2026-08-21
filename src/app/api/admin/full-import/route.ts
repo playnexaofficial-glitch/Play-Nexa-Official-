@@ -283,7 +283,8 @@ const importProgress = new Map<
   }
 >()
 
-export function getImportProgress(channelDbId: string) {
+// Internal function, not exported as a Next.js route handler
+function getImportProgress(channelDbId: string) {
   return importProgress.get(channelDbId)
 }
 
