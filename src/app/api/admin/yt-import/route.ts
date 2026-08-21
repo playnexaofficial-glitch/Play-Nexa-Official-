@@ -146,13 +146,15 @@ async function geminiFilter(
 
     const supabaseAdmin = adminClient
 
-    const { data: activeKey } = await supabaseAdmin
+    const { data: activeKeyData } = await supabaseAdmin
       .from('gemini_keys')
-      .select('api_key, id')
+      .select('api_key, id, usage_count')
       .eq('is_active', true)
       .order('usage_count', { ascending: true })
       .limit(1)
       .maybeSingle()
+
+    const activeKey = activeKeyData as { api_key: string; id: string; usage_count: number } | null
 
     if (activeKey?.api_key) key = activeKey.api_key
     if (!key) return { passed: false, reason: 'No Gemini key', confidence: 0 }
