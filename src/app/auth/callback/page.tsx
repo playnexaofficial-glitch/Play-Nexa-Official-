@@ -16,6 +16,10 @@ export default function AuthCallbackPage() {
     const handleCallback = async () => {
       try {
         const sb = getSupabase()
+        if (!sb) {
+          router.replace('/auth')
+          return
+        }
 
         // Supabase automatically exchanges the OAuth code
         // from the URL hash fragment for a session
