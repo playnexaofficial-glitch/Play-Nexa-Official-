@@ -256,7 +256,7 @@ Example: 1:movie:0.9
       }
     }
 
-    results.push(...batchResults)
+    results.push(...(batchResults as any[]))
 
     // Rate limit between Gemini batches
     if (i + BATCH_SIZE < videos.length) {
