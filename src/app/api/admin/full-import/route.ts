@@ -166,7 +166,7 @@ async function classifyBatch(
     confidence: number
   }>
 > {
-  const results = []
+  const results: any[] = []
 
   // Process in batches of 10 for Gemini
   const BATCH_SIZE = 10
