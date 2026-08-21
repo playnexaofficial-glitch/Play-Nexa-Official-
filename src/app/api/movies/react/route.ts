@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
           .eq('video_id', movieId)
           .maybeSingle()
 
-        if (existing?.reaction === reaction) {
+        if (existing && existing.reaction === reaction) {
           // Toggle off
           await supabase.from('movie_reactions')
             .delete()
