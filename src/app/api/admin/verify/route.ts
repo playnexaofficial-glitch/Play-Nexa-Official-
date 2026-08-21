@@ -55,11 +55,14 @@ export async function POST(req: NextRequest) {
         foundAdmin = data[0]
         // Auto-sync Firebase UID to admin_users table if missing or different
         if (userId && (!foundAdmin.user_id || foundAdmin.user_id !== userId)) {
-          await adminClient
-            .from('admin_users')
-            .update({ user_id: userId })
-            .eq('id', foundAdmin.id)
-            .catch(() => {})
+          try {
+            await adminClient
+              .from('admin_users')
+              .update({ user_id: userId })
+              .eq('id', foundAdmin.id)
+          } catch (e) {
+            // Ignore error on auto-sync
+          }
         }
       }
     }
