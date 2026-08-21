@@ -14,20 +14,79 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Play Nexa — Premium Media Ecosystem",
-  description: "Download, watch, play and manage entertainment — all in one place. Premium futuristic media ecosystem.",
-  keywords: ["Play Nexa", "Media", "Download", "Movies", "Games", "Music", "Streaming"],
-  authors: [{ name: "Play Nexa" }],
-  manifest: "/manifest.json",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "Play Nexa",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL
+    || 'https://playnexa.vercel.app'
+  ),
+  title: {
+    default: 'Play Nexa — Free Movies, Music & Games',
+    template: '%s | Play Nexa',
   },
+  description:
+    'Play Nexa — Watch free Bangla & Hindi movies, ' +
+    'listen to music, play games online. ' +
+    'No subscription needed. Stream unlimited entertainment.',
+  keywords: [
+    'play nexa',
+    'free movies online',
+    'bangla movie',
+    'bengali movie online free',
+    'hindi movie free',
+    'free music streaming',
+    'bangla song',
+    'natok online',
+    'free entertainment app',
+    'watch movie online free',
+    'yt music alternative',
+    'online games free',
+    'play nexa app',
+    'stream movies free',
+    'bangla natok free',
+  ],
+  authors: [{ name: 'Play Nexa Team' }],
+  creator: 'Play Nexa',
+  publisher: 'Play Nexa',
   openGraph: {
-    title: "Play Nexa — Premium Media Ecosystem",
-    description: "Download, watch, play and manage entertainment — all in one place.",
-    type: "website",
+    type: 'website',
+    locale: 'en_US',
+    url: process.env.NEXT_PUBLIC_APP_URL
+      || 'https://playnexa.vercel.app',
+    siteName: 'Play Nexa',
+    title: 'Play Nexa — Free Movies, Music & Games',
+    description:
+      'Watch free Bangla & Hindi movies, ' +
+      'listen to music, play games. ' +
+      'Your ultimate free entertainment hub.',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Play Nexa — Free Entertainment Hub',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Play Nexa — Free Movies, Music & Games',
+    description:
+      'Watch free movies, listen to music, ' +
+      'play games — all in one place.',
+    images: ['/og-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+    },
+  },
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/icon-192.png',
+    apple: '/icon-192.png',
   },
 };
 

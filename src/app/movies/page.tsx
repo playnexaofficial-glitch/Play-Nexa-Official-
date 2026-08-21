@@ -8,6 +8,19 @@ import FeaturedBanner from
 import MovieCard from
   '@/components/movies/MovieCard'
 
+export const metadata = {
+  title: 'Free Movies — Bangla, Hindi & More',
+  description:
+    'Watch free Bangla movies, Hindi dubbed movies, ' +
+    'web series, natok, and telefilms online. ' +
+    'New movies added daily. No subscription.',
+  openGraph: {
+    title: 'Free Movies | Play Nexa',
+    description:
+      'Stream free Bangla & Hindi movies online.',
+  },
+}
+
 export default function MoviesPage() {
   const router = useRouter()
   const [userId, setUserId] = useState<
