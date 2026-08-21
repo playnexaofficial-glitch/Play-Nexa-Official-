@@ -50,11 +50,13 @@ export async function GET(req: NextRequest) {
     const seen = new Set<string>()
     const merged: any[] = []
 
-    for (const t of [
-      ...(titleResults || []),
-      ...(channelResults || []),
-      ...(descResults || []),
-    ]) {
+    const combined = [
+      ...(titleResults as any[] || []),
+      ...(channelResults as any[] || []),
+      ...(descResults as any[] || []),
+    ]
+    
+    for (const t of combined) {
       if (!seen.has(t.id)) {
         seen.add(t.id)
         merged.push(t)
