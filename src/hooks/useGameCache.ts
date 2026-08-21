@@ -20,10 +20,12 @@ async function getStorageEstimate(): Promise<StorageEstimate | null> {
   try {
     if (!navigator.storage?.estimate) return null
     const est = await navigator.storage.estimate()
-    const availableMB = (est.quota - est.usage) / (1024 * 1024)
+    const quota = est.quota ?? 0
+    const usage = est.usage ?? 0
+    const availableMB = (quota - usage) / (1024 * 1024)
     return {
-      quota: est.quota,
-      usage: est.usage,
+      quota,
+      usage,
       availableMB,
     }
   } catch {

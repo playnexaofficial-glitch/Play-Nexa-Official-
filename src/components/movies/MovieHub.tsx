@@ -100,7 +100,7 @@ export default function MovieHub() {
 
   // ── Auto-scroll featured banner ──
   const featured = [...allMovies]
-    .sort((a, b) => (b.view_count + b.like_count) - (a.view_count + a.like_count))
+    .sort((a, b) => ((b.view_count || 0) + (b.like_count || 0)) - ((a.view_count || 0) + (a.like_count || 0)))
     .slice(0, 5)
 
   useEffect(() => {
@@ -117,7 +117,7 @@ export default function MovieHub() {
 
   // Trending: ORDER BY watch_count + like_count DESC
   const trending = [...allMovies]
-    .sort((a, b) => (b.watch_count + b.like_count) - (a.watch_count + a.like_count))
+    .sort((a, b) => ((b.watch_count || 0) + (b.like_count || 0)) - ((a.watch_count || 0) + (a.like_count || 0)))
     .slice(0, 10)
 
   // New releases: ORDER BY published_at DESC
@@ -131,45 +131,45 @@ export default function MovieHub() {
 
   // Per-channel sections
   const channelSections = channels.map(ch => {
-    const chId = ch.channel_id || ch.yt_channels?.channel_id
     const chMovies = allMovies
-      .filter(m => m.channel_id === chId)
+      .filter(m => (m.channel_name && m.channel_name.toLowerCase() === ch.name.toLowerCase()) || ((m as any).channel && (m as any).channel.toLowerCase() === ch.name.toLowerCase()))
       .slice(0, 6)
     return { channel: ch, movies: chMovies }
   }).filter(cs => cs.movies.length > 0)
 
   // Recommended: based on most watched channel from history
   const recommended = (() => {
-    const history: Array<{ youtube_id: string; channel_id: string; watched_at: string }> =
+    const history: Array<{ youtube_id: string; channel_name?: string; channel_id?: string; watched_at: string }> =
       lsGet('pn_movie_history', [])
 
     if (history.length > 0) {
       const channelCount: Record<string, number> = {}
       history.forEach(h => {
-        channelCount[h.channel_id] = (channelCount[h.channel_id] || 0) + 1
+        const key = h.channel_name || h.channel_id || ''
+        if (key) channelCount[key] = (channelCount[key] || 0) + 1
       })
       const topChannel = Object.entries(channelCount).sort((a, b) => b[1] - a[1])[0]?.[0]
       if (topChannel) {
         const watchedIds = history.map(h => h.youtube_id)
         const recMovies = allMovies
-          .filter(m => m.channel_id === topChannel && !watchedIds.includes(m.youtube_id))
+          .filter(m => ((m.channel_name && m.channel_name.toLowerCase() === topChannel.toLowerCase()) || ((m as any).channel && (m as any).channel.toLowerCase() === topChannel.toLowerCase())) && !watchedIds.includes(m.youtube_id))
           .slice(0, 10)
         if (recMovies.length > 0) return recMovies
       }
     }
 
     // Fallback: most viewed overall
-    return [...allMovies].sort((a, b) => b.view_count - a.view_count).slice(0, 10)
+    return [...allMovies].sort((a, b) => (b.view_count || 0) - (a.view_count || 0)).slice(0, 10)
   })()
 
   // Filtered movies by active channel
   const filteredMovies = activeChannel === 'all'
     ? allMovies
-    : allMovies.filter(m => m.channel_id === activeChannel)
+    : allMovies.filter(m => (m.channel_name && m.channel_name.toLowerCase() === activeChannel.toLowerCase()) || ((m as any).channel && (m as any).channel.toLowerCase() === activeChannel.toLowerCase()))
 
   // ── Get channel display for a movie ──
   const getChannelDisplay = useCallback((movie: Movie): ChannelDisplay | undefined => {
-    return channels.find(ch => ch.channel_id === movie.channel_id || ch.yt_channels?.channel_id === movie.channel_id)
+    return channels.find(ch => ch.name.toLowerCase() === (movie.channel_name || (movie as any).channel || '').toLowerCase())
   }, [channels])
 
   // ── Handle movie selection ──
@@ -332,7 +332,7 @@ export default function MovieHub() {
                       style={{ backgroundColor: ch.badge_color }}
                     >
                       <span className="text-white text-xs font-bold">
-                        {ch.display_name[0]}
+                        {(ch.display_name || ch.name)?.[0] || 'C'}
                       </span>
                     </div>
                   )}
@@ -341,7 +341,7 @@ export default function MovieHub() {
                   className="text-sm font-medium whitespace-nowrap"
                   style={{ color: isActive ? ch.badge_color : '#9CA3AF' }}
                 >
-                  {ch.display_name}
+                  {ch.display_name || ch.name}
                 </span>
               </button>
             )

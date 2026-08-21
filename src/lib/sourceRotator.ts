@@ -7,7 +7,7 @@ interface Downloader {
   supports: string[];
 }
 
-const downloaders: Downloader[] = downloadersData as Downloader[];
+const downloaders: Downloader[] = (downloadersData as unknown) as Downloader[];
 
 export function getSourceForPlatform(platformKey: string): Downloader | null {
   const source = downloaders.find(d => d.supports.includes(platformKey));

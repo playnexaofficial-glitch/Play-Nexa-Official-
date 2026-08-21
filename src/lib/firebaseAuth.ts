@@ -62,17 +62,20 @@ export const loginWithEmail = async (
 
         // Ensure Supabase admin_users table is mapped to this Firebase UID
         if (supabase) {
-          await supabase
-            .from('admin_users')
-            .upsert(
-              {
-                user_id: createResult.user.uid,
-                email: cleanEmail,
-                role: 'superadmin',
-              },
-              { onConflict: 'email' }
-            )
-            .catch(() => {})
+          try {
+            await supabase
+              .from('admin_users')
+              .upsert(
+                {
+                  user_id: createResult.user.uid,
+                  email: cleanEmail,
+                  role: 'superadmin',
+                },
+                { onConflict: 'email' }
+              )
+          } catch {
+            // Ignore if Supabase fails
+          }
         }
 
         // Trigger server-side verify to ensure sync

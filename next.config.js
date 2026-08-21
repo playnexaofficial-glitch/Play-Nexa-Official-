@@ -20,6 +20,8 @@ const nextConfig = {
         hostname: 'lh3.googleusercontent.com',
       },
     ],
+    // Allow local public images
+    unoptimized: false,
   },
   // Disable x-powered-by header
   poweredByHeader: false,

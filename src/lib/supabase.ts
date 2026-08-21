@@ -110,17 +110,21 @@ export interface Movie {
 export interface SupabaseMovie {
   id: string
   yt_video_id: string
+  youtube_id?: string
   title: string
   thumbnail_url: string | null
+  thumbnail?: string | null
   category: string
   genre: string[]
   duration_sec: number
   channel: string
+  channel_name?: string
   language: string
   region: string
   dubbed_tags: string[]
   views: number
   source: string
+  description?: string | null
   created_at: string
 }
 

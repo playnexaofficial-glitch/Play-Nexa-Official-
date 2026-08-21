@@ -11,7 +11,7 @@ type ViewMode = 'audio' | 'video'
 
 interface Props {
   track: MusicTrack
-  iframeRef: React.RefObject<HTMLIFrameElement>
+  iframeRef: React.RefObject<HTMLIFrameElement | null>
   isPlaying: boolean
   currentTime: number; duration: number
   progress: number; shuffleMode: boolean
@@ -40,7 +40,7 @@ export default function FullPlayer({
   const [liked, setLiked] = useState(false)
 
   const handleLike = async () => {
-    if (!userId) return
+    if (!userId || !supabase) return
     setLiked(l => !l)
     if (!liked) {
       await supabase.from('music_likes')
@@ -61,7 +61,7 @@ export default function FullPlayer({
   // (run on mount and track change)
   useEffect(() => {
     const loadLiked = async () => {
-      if (!userId) return
+      if (!userId || !supabase) return
       const { data } = await supabase
         .from('music_likes')
         .select('id')

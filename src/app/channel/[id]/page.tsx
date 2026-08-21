@@ -102,7 +102,18 @@ export default function ChannelPage(
         ) : (
           <div className="grid grid-cols-2 gap-3">
             {videos.map(video => (
-              <MovieCard key={video.id} movie={video} fullWidth />
+              <MovieCard 
+                key={video.id} 
+                movie={{
+                  id: video.id,
+                  youtube_id: video.videoId,
+                  title: video.title,
+                  thumbnail: video.thumbnail,
+                  channel_name: video.channel
+                }}
+                variant="portrait"
+                onPress={() => router.push(`/movies/${video.id}`)}
+              />
             ))}
           </div>
         )}

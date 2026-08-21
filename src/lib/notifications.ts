@@ -218,6 +218,7 @@ export const registerPushToken = async (authUserId: string): Promise<boolean> =>
   // Register with Supabase
   try {
     const sb = getSupabase()
+    if (!sb) return false
     const { error } = await sb.rpc('register_push_token', {
       p_auth_user_id: authUserId,
       p_device_token: token,
@@ -250,9 +251,11 @@ export const unregisterPushToken = async (): Promise<void> => {
 
   try {
     const sb = getSupabase()
-    await sb.rpc('unregister_push_token', {
-      p_device_token: token,
-    })
+    if (sb) {
+      await sb.rpc('unregister_push_token', {
+        p_device_token: token,
+      })
+    }
   } catch {}
 
   // Clear local cache

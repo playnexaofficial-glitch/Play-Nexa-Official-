@@ -18,9 +18,14 @@ export default function FavoritesPage() {
     const init = async () => {
       const { auth } = await import('@/lib/firebase')
       const { onAuthStateChanged } = await import('firebase/auth')
-      onAuthStateChanged(auth, async (user) => {
+      if (!auth) {
+        setIsLoading(false)
+        return
+      }
+      onAuthStateChanged(auth, async (user: any) => {
         setUserId(user?.uid || null)
         if (user?.uid) {
+          if (!supabase) return
           const [watchlistRes, musicSavedRes] = await Promise.all([
             supabase
               .from('user_watchlist')
@@ -44,7 +49,7 @@ export default function FavoritesPage() {
   }, [])
 
   const removeMovie = async (movieId: string) => {
-    if (!userId) return
+    if (!userId || !supabase) return
     await supabase
       .from('user_watchlist')
       .delete()
@@ -54,7 +59,7 @@ export default function FavoritesPage() {
   }
 
   const removeMusic = async (trackId: string) => {
-    if (!userId) return
+    if (!userId || !supabase) return
     await supabase
       .from('music_saved')
       .delete()

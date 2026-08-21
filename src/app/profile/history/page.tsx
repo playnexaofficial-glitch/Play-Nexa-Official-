@@ -16,9 +16,14 @@ export default function HistoryPage() {
     const init = async () => {
       const { auth } = await import('@/lib/firebase')
       const { onAuthStateChanged } = await import('firebase/auth')
-      onAuthStateChanged(auth, async (user) => {
+      if (!auth) {
+        setIsLoading(false)
+        return
+      }
+      onAuthStateChanged(auth, async (user: any) => {
         setUserId(user?.uid || null)
         if (user?.uid) {
+          if (!supabase) return
           const [movieRes, musicRes] = await Promise.all([
             supabase
               .from('user_history')
@@ -69,7 +74,7 @@ export default function HistoryPage() {
   }, [])
 
   const deleteItem = async (itemId: string, type: 'movie' | 'music') => {
-    if (!userId) return
+    if (!userId || !supabase) return
     const table = type === 'movie' ? 'user_history' : 'music_history'
     const column = type === 'movie' ? 'movie_id' : 'track_id'
     
@@ -106,7 +111,7 @@ export default function HistoryPage() {
         {history.length > 0 && (
           <button
             onClick={async () => {
-              if (!userId) return
+              if (!userId || !supabase) return
               await Promise.all([
                 supabase.from('user_history').delete().eq('user_id', userId),
                 supabase.from('music_history').delete().eq('user_id', userId)

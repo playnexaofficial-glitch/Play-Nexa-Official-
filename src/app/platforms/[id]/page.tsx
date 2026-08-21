@@ -6,7 +6,7 @@ import { AlertCircle, ArrowRight } from 'lucide-react';
 import TopBar from '@/components/layout/TopBar';
 import PlatformHeader from '@/components/platforms/PlatformHeader';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
-import { Badge } from '@/components/ui/Badge';
+import { Badge } from '@/components/ui/badge';
 import { EmptyState } from '@/components/ui/EmptyState';
 import platformsData from '@/data/platforms.json';
 

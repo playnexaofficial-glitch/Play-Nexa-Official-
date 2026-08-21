@@ -126,13 +126,14 @@ export function useMusicQueue(
 
       // Record play history
       if (userId && supabase) {
-        supabase.from('music_history')
-          .upsert([{
-            user_id: userId,
-            track_id: seed.id,
-            played_at: new Date().toISOString(),
-          }], { onConflict: 'user_id,track_id' })
-          .then(() => {}).catch(() => {})
+        Promise.resolve(
+          supabase.from('music_history')
+            .upsert([{
+              user_id: userId,
+              track_id: seed.id,
+              played_at: new Date().toISOString(),
+            }], { onConflict: 'user_id,track_id' })
+        ).catch(() => {})
       }
     }, [userId])
 
@@ -157,13 +158,14 @@ export function useMusicQueue(
     // Record history for new track
     const nextT = queue[next]
     if (userId && nextT && supabase) {
-      supabase.from('music_history')
-        .upsert([{
-          user_id: userId,
-          track_id: nextT.id,
-          played_at: new Date().toISOString(),
-        }], { onConflict: 'user_id,track_id' })
-        .then(() => {}).catch(() => {})
+      Promise.resolve(
+        supabase.from('music_history')
+          .upsert([{
+            user_id: userId,
+            track_id: nextT.id,
+            played_at: new Date().toISOString(),
+          }], { onConflict: 'user_id,track_id' })
+      ).catch(() => {})
     }
   }, [queue, currentIndex, shuffleMode,
     repeatMode, userId])

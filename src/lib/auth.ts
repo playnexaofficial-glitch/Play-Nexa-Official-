@@ -43,6 +43,7 @@ const emptyResult = (error?: string): AuthResult => ({
 export const signInWithGoogle = async (): Promise<AuthResult> => {
   try {
     const sb = getSupabase()
+    if (!sb) return emptyResult('Database not configured')
 
     const { data, error } = await sb.auth.signInWithOAuth({
       provider: 'google',
@@ -80,6 +81,7 @@ export const signUpWithEmail = async (
 
   try {
     const sb = getSupabase()
+    if (!sb) return emptyResult('Database not configured')
 
     const { data, error } = await sb.auth.signUp({
       email: email.trim().toLowerCase(),
@@ -110,6 +112,7 @@ export const signInWithEmail = async (
 
   try {
     const sb = getSupabase()
+    if (!sb) return emptyResult('Database not configured')
 
     const { data, error } = await sb.auth.signInWithPassword({
       email: email.trim().toLowerCase(),
@@ -142,6 +145,7 @@ export const signInWithEmail = async (
 export const signInAnonymously = async (): Promise<AuthResult> => {
   try {
     const sb = getSupabase()
+    if (!sb) return emptyResult('Database not configured')
 
     const { data, error } = await sb.auth.signInAnonymously()
 
@@ -167,6 +171,7 @@ export const syncUserProfile = async (
 ): Promise<SupabaseUserProfile | null> => {
   try {
     const sb = getSupabase()
+    if (!sb) return null
     const meta = user.user_metadata || {}
 
     const profileData = {
@@ -213,6 +218,7 @@ export const syncUserProfile = async (
 export const getCurrentSession = async (): Promise<Session | null> => {
   try {
     const sb = getSupabase()
+    if (!sb) return null
     const { data } = await sb.auth.getSession()
     return data.session
   } catch { return null }
@@ -221,6 +227,7 @@ export const getCurrentSession = async (): Promise<Session | null> => {
 export const getCurrentUserProfile = async (): Promise<SupabaseUserProfile | null> => {
   try {
     const sb = getSupabase()
+    if (!sb) return null
     const { data: { user } } = await sb.auth.getUser()
     if (!user) return null
 
@@ -238,6 +245,7 @@ export const getCurrentUserProfile = async (): Promise<SupabaseUserProfile | nul
 export const signOut = async (): Promise<{ success: boolean; error: string | null }> => {
   try {
     const sb = getSupabase()
+    if (!sb) return { success: true, error: null }
     const { error } = await sb.auth.signOut()
 
     if (error) return { success: false, error: error.message }
@@ -253,6 +261,7 @@ export const resetPassword = async (email: string): Promise<{ success: boolean; 
   if (!email.trim()) return { success: false, error: 'Email is required' }
   try {
     const sb = getSupabase()
+    if (!sb) return { success: false, error: 'Database not configured' }
     const { error } = await sb.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
       redirectTo: `${window.location.origin}/auth/callback`,
     })

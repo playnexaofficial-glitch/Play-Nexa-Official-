@@ -33,8 +33,8 @@ export default function OfflineIndicator() {
     }
   }, [])
 
-  // Don't render anything when online
-  if (state === 'online') return null
+  // Remove early return so animation can work and fix TS error
+  // if (state === 'online') return null
 
   const isOffline = state === 'offline'
 

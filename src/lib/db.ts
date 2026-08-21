@@ -137,6 +137,13 @@ export const isItemSaved = async (id: string): Promise<boolean> => {
   return !!item
 }
 
+// Aliases for useOfflineMedia
+export const saveMedia = saveItem
+export const getAllMedia = getAllSaved
+export const getMediaByType = getSavedByType
+export const deleteMedia = deleteItem
+export const updateWatchProgress = updateProgress
+
 // ── Playlists ────────────────────────────────────────────────
 
 export const initDefaultPlaylists = async () => {
@@ -187,6 +194,8 @@ export const initDefaultPlaylists = async () => {
     await d.put('playlists', p)
   }
 }
+
+export const createDefaultPlaylists = initDefaultPlaylists
 
 export const getAllPlaylists = async () => {
   const d = await getDB()
@@ -242,14 +251,14 @@ export const deletePlaylist = async (id: string) => {
   await d.delete('playlists', id)
 }
 
-export const renamePlaylist = async (id: string, name: string, emoji: string) => {
+export const renamePlaylist = async (id: string, name: string, emoji?: string) => {
   const d = await getDB()
   const p = await d.get('playlists', id)
   if (!p) return
   await d.put('playlists', {
     ...p,
     name,
-    emoji,
+    emoji: emoji !== undefined ? emoji : p.emoji,
     updatedAt: Date.now(),
   })
 }

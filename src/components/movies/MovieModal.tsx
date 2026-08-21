@@ -92,7 +92,7 @@ export default function MovieModal({
     }
     history.unshift({
       youtube_id: movie.youtube_id,
-      channel_id: movie.channel_id,
+      channel_id: (movie as any).channel_id || '',
       watched_at: new Date().toISOString(),
     })
     if (history.length > 100) history.length = 100
@@ -329,9 +329,9 @@ export default function MovieModal({
                 · {new Date(movie.published_at).getFullYear()}
               </span>
             )}
-            {movie.view_count > 0 && (
+            {(movie.view_count || 0) > 0 && (
               <span className="text-[#9CA3AF] text-xs">
-                · {formatCount(movie.view_count)} views
+                · {formatCount(movie.view_count || 0)} views
               </span>
             )}
           </div>

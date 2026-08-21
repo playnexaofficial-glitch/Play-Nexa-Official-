@@ -1,23 +1,47 @@
-interface Movie {
+export interface Movie {
   id: string; youtube_id: string; title: string
   thumbnail: string; channel_name: string
   watch_count?: number; watchPercent?: number
+  view_count?: number; like_count?: number
+  published_at?: string
+  channel_id?: string
+  duration?: string
+  description?: string
   badge?: string | null; isNew?: boolean
 }
+
+export interface ChannelDisplay {
+  id: string
+  name: string
+  logo: string
+  subscribers: string
+  badge_color?: string
+  display_name?: string
+  channel_id?: string
+  logo_url?: string
+  avatar_url?: string
+  border_color?: string
+  yt_channels?: { channel_id?: string }
+}
+
 interface Props {
   movie: Movie
-  variant: 'portrait' | 'landscape'
-  onPress: () => void
+  variant?: 'portrait' | 'landscape'
+  onPress?: () => void
+  onTap?: () => void
+  channelDisplay?: ChannelDisplay
 }
 
 export default function MovieCard({
-  movie, variant, onPress
+  movie, variant = 'portrait', onPress, onTap, channelDisplay
 }: Props) {
   const isPortrait = variant === 'portrait'
+  const handlePress = onPress || onTap || (() => {})
+  const channelName = channelDisplay?.display_name || channelDisplay?.name || movie.channel_name || (movie as any).channel
 
   return (
     <button
-      onClick={onPress}
+      onClick={handlePress}
       className={`flex-shrink-0 text-left
         active:opacity-60 transition-opacity duration-150
         ${isPortrait ? 'w-36' : 'w-56'}`}>
@@ -65,7 +89,7 @@ export default function MovieCard({
       </p>
       <p className="text-[#9CA3AF] text-[10px]
         mt-0.5 truncate">
-        {movie.channel_name}
+        {channelName}
       </p>
     </button>
   )

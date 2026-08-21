@@ -146,7 +146,7 @@ export default function AdminBackdoor({ isOpen, onClose }: AdminBackdoorProps) {
 
   // ── Toast helper ──
   const showToast = useCallback((type: ToastData['type'], message: string) => {
-    const id = ++toastIdRef.value
+    const id = ++toastIdRef.current
     setToasts(prev => [...prev.slice(-4), { id, type, message }])
     setTimeout(() => {
       setToasts(prev => prev.filter(t => t.id !== id))

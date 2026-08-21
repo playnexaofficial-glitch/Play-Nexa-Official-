@@ -128,34 +128,29 @@ export async function extractAudioMetadata(
 
   // Try jsmediatags for full metadata + artwork (browser build only)
   try {
-    if (typeof window !== 'undefined' && file) {
-      const jsmediatags = await import(
-        /* webpackIgnore: true */ /* @vite-ignore */
-        'jsmediatags/dist/jsmediatags.min.js'
-      ).catch(() => null)
-      if (jsmediatags) {
-        const Reader = jsmediatags.default || jsmediatags
-        const tags = await new Promise<any>((resolve, reject) => {
-          Reader.read(file, {
-            onSuccess: (tag: any) => resolve(tag),
-            onError: (err: any) => reject(err),
-          })
+    if (typeof window !== 'undefined' && file && (window as any).jsmediatags) {
+      const jsmediatags = (window as any).jsmediatags
+      const Reader = jsmediatags.default || jsmediatags
+      const tags = await new Promise<any>((resolve, reject) => {
+        Reader.read(file, {
+          onSuccess: (tag: any) => resolve(tag),
+          onError: (err: any) => reject(err),
         })
-        if (tags?.tags) {
-          if (tags.tags.title) fallback.title = tags.tags.title
-          if (tags.tags.artist) fallback.artist = tags.tags.artist
-          if (tags.tags.album) fallback.album = tags.tags.album
+      })
+      if (tags?.tags) {
+        if (tags.tags.title) fallback.title = tags.tags.title
+        if (tags.tags.artist) fallback.artist = tags.tags.artist
+        if (tags.tags.album) fallback.album = tags.tags.album
 
-          // Extract artwork
-          const picture = tags.tags.picture
-          if (picture?.data && picture.format) {
-            const bytes = new Uint8Array(picture.data)
-            let binary = ''
-            for (let i = 0; i < bytes.length; i++) {
-              binary += String.fromCharCode(bytes[i])
-            }
-            fallback.artwork = `data:${picture.format};base64,${btoa(binary)}`
+        // Extract artwork
+        const picture = tags.tags.picture
+        if (picture?.data && picture.format) {
+          const bytes = new Uint8Array(picture.data)
+          let binary = ''
+          for (let i = 0; i < bytes.length; i++) {
+            binary += String.fromCharCode(bytes[i])
           }
+          fallback.artwork = `data:${picture.format};base64,${btoa(binary)}`
         }
       }
     }

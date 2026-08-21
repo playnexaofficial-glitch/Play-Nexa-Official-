@@ -75,7 +75,7 @@ const VAULT_TABS: { key: VaultTab; label: string; icon: typeof Video }[] = [
   { key: 'all',     label: 'All',     icon: Layers },
   { key: 'videos',  label: 'Videos',  icon: Video },
   { key: 'audio',   label: 'Audio',   icon: Music },
-  { key: 'images',  label: 'Images',  icon: Image },
+  { key: 'images',  label: 'Images',  icon: ImageIcon },
 ]
 
 // ── Dial pad digits ─────────────────────────────────────────────

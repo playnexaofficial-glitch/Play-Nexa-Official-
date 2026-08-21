@@ -1,26 +1,45 @@
 {
   "name": "Play Nexa",
   "short_name": "Play Nexa",
-  "description": "Your Ultimate Media Universe — Watch movies, listen to music, play games for free",
+  "description": "Free Movies, Music & Games — Your Ultimate Entertainment Hub",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0D0D0D",
-  "theme_color": "#7C3AED",
-  "orientation": "portrait",
+  "theme_color": "#E50000",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "categories": ["entertainment", "music", "video"],
-  "lang": "en"
+  "categories": [
+    "entertainment",
+    "music",
+    "video",
+    "games"
+  ],
+  "lang": "en-US",
+  "dir": "ltr",
+  "scope": "/"
 }

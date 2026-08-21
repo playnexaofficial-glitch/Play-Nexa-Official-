@@ -52,7 +52,9 @@ export default function AdminSidebar({
 
   const handleSignOut = async () => {
     try {
-      await signOut(auth)
+      if (auth) {
+        await signOut(auth)
+      }
     } catch {}
     router.replace('/')
   }

@@ -91,7 +91,7 @@ export const useMovieSearch = () => {
   const [results, setResults] = useState<YouTubeMovie[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const timerRef = useRef<ReturnType<typeof setTimeout>>()
+  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   useEffect(() => {
     if (!query.trim()) {

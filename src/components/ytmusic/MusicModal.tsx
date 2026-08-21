@@ -70,7 +70,7 @@ export default function MusicModal({
 
   // ── Record to history on open ──
   useEffect(() => {
-    const history: Array<{ youtube_id: string; channel_id: string; watched_at: string }> =
+    const history: Array<{ youtube_id: string; channel_id?: string; watched_at: string }> =
       lsGet('pn_ytmusic_history', [])
     const existing = history.findIndex(h => h.youtube_id === track.youtube_id)
     if (existing >= 0) {
@@ -78,7 +78,7 @@ export default function MusicModal({
     }
     history.unshift({
       youtube_id: track.youtube_id,
-      channel_id: track.channel_id,
+      channel_id: track.channel_id || '',
       watched_at: new Date().toISOString(),
     })
     // Keep max 100 entries

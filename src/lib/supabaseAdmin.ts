@@ -45,3 +45,5 @@ export const supabaseAdmin = createClient(
     db: { schema: 'public' },
   }
 )
+
+export const supabase = supabaseAdmin

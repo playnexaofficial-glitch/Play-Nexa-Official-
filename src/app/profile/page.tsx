@@ -64,7 +64,12 @@ export default function ProfilePage() {
       const { auth } = await import('@/lib/firebase')
       const { onAuthStateChanged } = await import('firebase/auth')
 
-      unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (!auth) {
+        setIsLoading(false)
+        return
+      }
+
+      unsubscribe = onAuthStateChanged(auth, async (firebaseUser: any) => {
         setUser(firebaseUser)
         if (firebaseUser) {
           await loadStats(firebaseUser.uid, firebaseUser.email)
@@ -124,7 +129,9 @@ export default function ProfilePage() {
   const handleSignOut = async () => {
     const { auth } = await import('@/lib/firebase')
     const { signOut } = await import('firebase/auth')
-    await signOut(auth)
+    if (auth) {
+      await signOut(auth)
+    }
     localStorage.removeItem('pn_notif_enabled')
     router.replace('/auth/login')
   }

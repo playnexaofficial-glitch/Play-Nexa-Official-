@@ -298,7 +298,7 @@ function VideoCard({
   isSaved: boolean
 }) {
   const [imgReady, setImgReady] = useState(false)
-  const channel = resolveChannel(movie.channel_name, movie.filter_key)
+  const channel = resolveChannel(movie.channel, (movie as any).filter_key)
 
   return (
     <div
@@ -313,7 +313,7 @@ function VideoCard({
       {/* ── THUMBNAIL ── */}
       <div className="relative aspect-video rounded-xl overflow-hidden bg-pn-card">
         <Image
-          src={movie.thumbnail}
+          src={movie.thumbnail_url || ''}
           alt={movie.title}
           fill
           className={`object-cover transition-opacity duration-300 ${imgReady ? 'opacity-100' : 'opacity-0'}`}
@@ -388,7 +388,7 @@ function VideoCard({
           {movie.title}
         </h3>
         <p className="text-pn-muted text-[11px] truncate">
-          {movie.channel_name}
+          {movie.channel}
           {movie.language && movie.language !== 'Bangla' && (
             <span className="ml-1 text-pn-muted/60">&bull; {movie.language}</span>
           )}
@@ -426,7 +426,7 @@ function EngagementBar({
     }
   })
 
-  const channel = resolveChannel(movie.channel_name, movie.filter_key)
+  const channel = resolveChannel(movie.channel, (movie as any).filter_key)
 
   // ── COMMENT ──
   const handleSubmitComment = useCallback(() => {
@@ -445,7 +445,7 @@ function EngagementBar({
 
   // ── SHARE ──
   const handleShare = useCallback(async () => {
-    const shareUrl = `https://www.youtube.com/watch?v=${movie.youtube_id}`
+    const shareUrl = `https://www.youtube.com/watch?v=${movie.yt_video_id}`
     const shareData = {
       title: movie.title,
       text: `Watch "${movie.title}" on YouTube`,
@@ -464,7 +464,7 @@ function EngagementBar({
         // Final fallback — no-op
       }
     }
-  }, [movie.youtube_id, movie.title])
+  }, [movie.yt_video_id, movie.title])
 
   return (
     <div className="mt-4">
@@ -677,7 +677,7 @@ function PlayerModal({
   const overlayRef = useRef<HTMLDivElement>(null)
 
   // Build YouTube embed URL from the youtube_id in the Supabase row
-  const embedUrl = `https://www.youtube.com/embed/${movie.youtube_id}?autoplay=1&modestbranding=1&rel=0&showinfo=0&controls=1&playsinline=1&fs=1&color=white&cc_load_policy=0&iv_load_policy=3`
+  const embedUrl = `https://www.youtube.com/embed/${movie.yt_video_id}?autoplay=1&modestbranding=1&rel=0&showinfo=0&controls=1&playsinline=1&fs=1&color=white&cc_load_policy=0&iv_load_policy=3`
 
   // ESC key & body scroll lock
   useEffect(() => {
@@ -700,7 +700,7 @@ function PlayerModal({
     [onClose]
   )
 
-  const channel = resolveChannel(movie.channel_name, movie.filter_key)
+  const channel = resolveChannel(movie.channel, (movie as any).filter_key)
 
   return (
     <div
@@ -1121,8 +1121,8 @@ export default function OTTMovieHub({ embedded = false }: { embedded?: boolean }
       filtered = filtered.filter(
         (m) =>
           m.title.toLowerCase().includes(q) ||
-          m.channel_name.toLowerCase().includes(q) ||
-          (m.filter_key && m.filter_key.toLowerCase().includes(q))
+          (m.channel_name || m.channel || '').toLowerCase().includes(q) ||
+          ((m as any).filter_key && (m as any).filter_key.toLowerCase().includes(q))
       )
     }
 

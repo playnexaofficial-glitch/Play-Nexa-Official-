@@ -131,7 +131,7 @@ export default function MusicHub({ onTrackSelect }: MusicHubProps) {
 
         // Fallback recommended: most viewed
         if (recTracks.length === 0) {
-          recTracks = [...tracks].sort((a, b) => b.view_count - a.view_count).slice(0, 10)
+          recTracks = [...tracks].sort((a, b) => (b.view_count || 0) - (a.view_count || 0)).slice(0, 10)
         }
         setRecommended(recTracks)
       } catch (err: any) {
@@ -152,7 +152,7 @@ export default function MusicHub({ onTrackSelect }: MusicHubProps) {
     // Mood filter
     switch (activeMood) {
       case 'hot':
-        result.sort((a, b) => b.view_count - a.view_count)
+        result.sort((a, b) => (b.view_count || 0) - (a.view_count || 0))
         break
       case 'new':
         result.sort((a, b) => {
@@ -202,7 +202,7 @@ export default function MusicHub({ onTrackSelect }: MusicHubProps) {
 
   // ── Get channel display for a track ──
   const getChannelDisplay = useCallback((track: MusicTrack): ChannelDisplay | undefined => {
-    return channels.find(ch => ch.channel_id === track.channel_id || ch.yt_channels?.channel_id === track.channel_id)
+    return channels.find(ch => ch.channel_id === track.channel_id || (ch as any).yt_channels?.channel_id === track.channel_id)
   }, [channels])
 
   // ── Render ──
@@ -427,13 +427,13 @@ export default function MusicHub({ onTrackSelect }: MusicHubProps) {
                                   style={{ backgroundColor: ch.badge_color }}
                                 >
                                   <span className="text-white text-lg font-bold">
-                                    {ch.display_name[0]}
+                                    {(ch.display_name || ch.name || '?')[0]}
                                   </span>
                                 </div>
                               )}
                             </div>
                             <span className="text-[11px] text-[#9CA3AF] truncate max-w-[56px] text-center">
-                              {ch.display_name}
+                              {ch.display_name || ch.name || ''}
                             </span>
                           </button>
                         )

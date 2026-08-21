@@ -57,9 +57,9 @@ const CACHE_TTL_COINS = 1 * 60 * 1000
 
 const DB_TIMEOUT = 3000
 
-const withTimeout = <T>(promise: Promise<T>, ms = DB_TIMEOUT): Promise<T> =>
+const withTimeout = async <T = any>(promise: PromiseLike<T> | Promise<T>, ms = DB_TIMEOUT): Promise<T> =>
   Promise.race([
-    promise,
+    Promise.resolve(promise),
     new Promise<never>((_, reject) =>
       setTimeout(() => reject(new Error('DB_TIMEOUT')), ms)
     ),
@@ -80,7 +80,8 @@ export const fetchUserGameData = async (
 
   try {
     const sb = getSupabase()
-    const { data, error } = await withTimeout(
+    if (!sb) return []
+    const { data, error } = await withTimeout<any>(
       sb.rpc('fetch_user_game_data', { p_auth_user_id: authUserId })
     )
 
@@ -112,7 +113,8 @@ export const fetchGameScore = async (
 
   try {
     const sb = getSupabase()
-    const { data, error } = await withTimeout(
+    if (!sb) return null
+    const { data, error } = await withTimeout<any>(
       sb.rpc('fetch_game_score', {
         p_auth_user_id: authUserId,
         p_game_slug: gameSlug,
@@ -149,7 +151,12 @@ export const updateGameScore = async (
     const isNewHighScore = !current || score > current.highScore
 
     const sb = getSupabase()
-    const { data, error } = await withTimeout(
+    if (!sb) {
+      saveScoreLocally(gameSlug, score, coinsEarned)
+      return { ...fallback, isNewHighScore }
+    }
+
+    const { data, error } = await withTimeout<any>(
       sb.rpc('upsert_game_score', {
         p_auth_user_id: authUserId,
         p_game_slug: gameSlug,
@@ -195,7 +202,8 @@ export const fetchUserCoins = async (
 
   try {
     const sb = getSupabase()
-    const { data, error } = await withTimeout(
+    if (!sb) return empty
+    const { data, error } = await withTimeout<any>(
       sb.rpc('fetch_user_coins', { p_auth_user_id: authUserId })
     )
 
@@ -228,7 +236,8 @@ export const fetchLeaderboard = async (
 
   try {
     const sb = getSupabase()
-    const { data, error } = await withTimeout(
+    if (!sb) return []
+    const { data, error } = await withTimeout<any>(
       sb.rpc('fetch_leaderboard', {
         p_game_slug: gameSlug || null,
         p_limit: limit,
@@ -265,7 +274,8 @@ export const deductCoins = async (
 
   try {
     const sb = getSupabase()
-    const { data, error } = await withTimeout(
+    if (!sb) return { success: false, remainingCoins: 0 }
+    const { data, error } = await withTimeout<any>(
       sb.rpc('deduct_user_coins', {
         p_auth_user_id: authUserId,
         p_amount: amount,

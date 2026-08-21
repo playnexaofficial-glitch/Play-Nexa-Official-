@@ -13,11 +13,20 @@ const inter = Inter({
   display: "swap",
 });
 
+const getMetadataBase = () => {
+  const url = process.env.NEXT_PUBLIC_APP_URL;
+  if (url && url.startsWith('http')) {
+    try {
+      return new URL(url);
+    } catch {
+      // fallback
+    }
+  }
+  return new URL('https://playnexa.vercel.app');
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL
-    || 'https://playnexa.vercel.app'
-  ),
+  metadataBase: getMetadataBase(),
   title: {
     default: 'Play Nexa — Free Movies, Music & Games',
     template: '%s | Play Nexa',
@@ -63,15 +72,14 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: 'Play Nexa — Free Entertainment Hub',
+        type: 'image/png',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Play Nexa — Free Movies, Music & Games',
-    description:
-      'Watch free movies, listen to music, ' +
-      'play games — all in one place.',
+    description: 'Watch free movies, listen to music, play games.',
     images: ['/og-image.png'],
   },
   robots: {
@@ -85,8 +93,15 @@ export const metadata: Metadata = {
   },
   manifest: '/manifest.json',
   icons: {
-    icon: '/icon-192.png',
-    apple: '/icon-192.png',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
   },
 };
 
@@ -95,7 +110,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#7c3aed",
+  themeColor: "#E50000",
 };
 
 export default function RootLayout({
@@ -106,9 +121,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
         <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#E50000" />
+        <meta name="msapplication-TileColor" content="#E50000" />
+        <meta name="msapplication-TileImage" content="/icon-192.png" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <script
           dangerouslySetInnerHTML={{
             __html: `

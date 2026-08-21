@@ -38,7 +38,17 @@ export default function RelatedMovies({ movies, loading = false }: RelatedMovies
       <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
         {movies.map((movie) => (
           <div key={movie.id} className="flex-shrink-0">
-            <MovieCard movie={movie} />
+            <MovieCard 
+              movie={{
+                id: movie.id,
+                youtube_id: movie.videoId,
+                title: movie.title,
+                thumbnail: movie.thumbnail,
+                channel_name: movie.channel,
+              }}
+              variant="portrait"
+              onPress={() => window.location.href = `/movies/${movie.id}`}
+            />
           </div>
         ))}
       </div>
