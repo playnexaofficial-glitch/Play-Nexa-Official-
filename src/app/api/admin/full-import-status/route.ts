@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getImportProgress } from '../full-import/route'
+import { getImportProgress } from '@/lib/import-progress'
 
 export const dynamic = 'force-dynamic'
 

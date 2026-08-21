@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabaseAdmin'
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { importProgress } from '@/lib/import-progress'
 
 export const dynamic = 'force-dynamic'
 
@@ -267,26 +268,6 @@ Example: 1:movie:0.9
 }
 
 // ─── Main Import Handler ───
-
-// Store progress in memory (per channel)
-const importProgress = new Map<
-  string,
-  {
-    status: string
-    total: number
-    processed: number
-    moviesAdded: number
-    musicAdded: number
-    skipped: number
-    duplicates: number
-    error?: string
-  }
->()
-
-// Internal function, not exported as a Next.js route handler
-function getImportProgress(channelDbId: string) {
-  return importProgress.get(channelDbId)
-}
 
 async function runFullImport(channelDbId: string, channel: any) {
   const ytKey = process.env.YOUTUBE_API_KEY
