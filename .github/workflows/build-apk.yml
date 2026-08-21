@@ -1,0 +1,169 @@
+# .github/workflows/build-apk.yml
+# ============================================================================
+# GitHub Actions workflow that builds the Android APK for "Play Nexa".
+#
+# IMPORTANT — TWO SEPARATE DEPLOY PIPELINES
+# ============================================================================
+#   1. WEB (Vercel): Vercel's own GitHub integration auto-deploys the
+#      Next.js web app on every push to main. This workflow does NOT
+#      touch Vercel — it is purely for the Android APK.
+#
+#   2. APK (this workflow): builds an unsigned (or signed if you add
+#      secrets) APK artifact and uploads it to the Actions run. Download
+#      the APK from the Actions tab → click the latest run → scroll to
+#      "Artifacts" → download `play-nexa-apk`.
+#
+# TRIGGERS
+#   - On push to `main`: rebuild the APK whenever main changes.
+#   - Manual (workflow_dispatch): build on demand from the Actions tab.
+#
+# SIGNING (TODO — leave unsigned by default)
+# ============================================================================
+# This workflow produces an UNSIGNED release APK by default, suitable for
+# internal testing / sideloading. To produce a SIGNED release APK:
+#   1. Generate a keystore locally:
+#        keytool -genkey -v -keystore play-nexa.keystore -alias play-nexa \
+#          -keyalg RSA -keysize 2048 -validity 10000
+#   2. Base64-encode it and add as a GitHub Secret named `SIGNING_KEYSTORE`:
+#        base64 -i play-nexa.keystore -o keystore.b64
+#   3. Add these GitHub Secrets:
+#        SIGNING_KEYSTORE         (base64 of the .keystore file)
+#        SIGNING_KEYSTORE_PASSWORD
+#        SIGNING_KEY_ALIAS
+#        SIGNING_KEY_PASSWORD
+#   4. Uncomment the "Decode keystore" and "signingConfig" steps below.
+# ============================================================================
+
+name: Build Android APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Cancel any in-flight run when a new commit lands on the same ref.
+concurrency:
+  group: build-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-apk:
+    name: Build Release APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      # ----------------------------------------------------------------------
+      # 1. Checkout
+      # ----------------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ----------------------------------------------------------------------
+      # 2. Setup Node.js (LTS) with npm cache
+      # ----------------------------------------------------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      # ----------------------------------------------------------------------
+      # 3. Install dependencies (deterministic, uses package-lock.json)
+      # ----------------------------------------------------------------------
+      - name: Install dependencies
+        run: npm ci
+
+      # ----------------------------------------------------------------------
+      # 4. Build Next.js (web bundle — Capacitor copies this into the APK)
+      # ----------------------------------------------------------------------
+      - name: Build Next.js
+        run: npm run build
+        env:
+          # Disable telemetry to keep logs clean
+          NEXT_TELEMETRY_DISABLED: '1'
+
+      # ----------------------------------------------------------------------
+      # 5. Sync web build into the native Android project
+      #    (copies .next/static, public/ etc. into android/app/src/main/assets/public)
+      # ----------------------------------------------------------------------
+      - name: Sync Capacitor (Android)
+        run: npx cap sync android
+
+      # ----------------------------------------------------------------------
+      # 6. Setup JDK 17 (Capacitor 5+ requires JDK 17)
+      # ----------------------------------------------------------------------
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      # ----------------------------------------------------------------------
+      # 7. Make gradlew executable (sometimes lost in checkout on Windows runners;
+      #    harmless on Linux)
+      # ----------------------------------------------------------------------
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./android/gradlew
+
+      # ----------------------------------------------------------------------
+      # TODO (SIGNING): uncomment to decode a signing keystore from GitHub Secrets.
+      # ----------------------------------------------------------------------
+      # - name: Decode signing keystore
+      #   run: |
+      #     echo "${{ secrets.SIGNING_KEYSTORE }}" | base64 -d > android/app/play-nexa.keystore
+      # ----------------------------------------------------------------------
+
+      # ----------------------------------------------------------------------
+      # 8. Build the release APK
+      #
+      #    Without signing config → produces app-release-unsigned.apk.
+      #    With signing config (see TODO above) → produces app-release.apk.
+      # ----------------------------------------------------------------------
+      - name: Build release APK
+        working-directory: ./android
+        run: ./gradlew assembleRelease --no-daemon --stacktrace
+
+      # ----------------------------------------------------------------------
+      # 9. Locate the built APK (handles both signed and unsigned naming)
+      # ----------------------------------------------------------------------
+      - name: Locate APK
+        id: locate
+        run: |
+          set -e
+          APK_DIR="android/app/build/outputs/apk/release"
+          if [ -f "$APK_DIR/app-release.apk" ]; then
+            echo "apk_path=$APK_DIR/app-release.apk" >> "$GITHUB_OUTPUT"
+            echo "apk_name=play-nexa-apk" >> "$GITHUB_OUTPUT"
+          elif [ -f "$APK_DIR/app-release-unsigned.apk" ]; then
+            echo "apk_path=$APK_DIR/app-release-unsigned.apk" >> "$GITHUB_OUTPUT"
+            echo "apk_name=play-nexa-apk-unsigned" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::No APK found in $APK_DIR"
+            exit 1
+          fi
+
+      # ----------------------------------------------------------------------
+      # 10. Upload the APK as a workflow artifact (retained 14 days)
+      #     Download from: Actions tab → this run → Artifacts section.
+      # ----------------------------------------------------------------------
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.locate.outputs.apk_name }}
+          path: ${{ steps.locate.outputs.apk_path }}
+          retention-days: 14
+          if-no-files-found: error
+
+      # ----------------------------------------------------------------------
+      # 11. Summary — print artifact info into the run summary
+      # ----------------------------------------------------------------------
+      - name: Summary
+        run: |
+          echo "## APK Build Complete ✅" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Artifact name: \`${{ steps.locate.outputs.apk_name }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "Download it from the **Artifacts** section of this run." >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "_Note: Vercel deploys the web version separately via its own GitHub integration._" >> "$GITHUB_STEP_SUMMARY"

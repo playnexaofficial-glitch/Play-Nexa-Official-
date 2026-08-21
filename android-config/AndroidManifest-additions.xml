@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  android-config/AndroidManifest-additions.xml
+  ============================================================================
+  Permission snippet to PASTE into your existing
+  android/app/src/main/AndroidManifest.xml — do NOT replace the whole file.
+
+  Insert the <uses-permission> lines below INSIDE the <manifest> tag,
+  BEFORE the <application> tag. The existing <application>...</application>
+  block stays untouched.
+
+  Why both sets of permissions?
+  ---------------------------------------------------------------------------
+  Android 13 (API 33+) split READ_EXTERNAL_STORAGE into granular per-media
+  permissions, so we ask for READ_MEDIA_VIDEO and READ_MEDIA_AUDIO there.
+  Android 12 (API 32) and below still use READ_EXTERNAL_STORAGE, gated by
+  maxSdkVersion="32" so newer devices don't see a redundant permission.
+  ============================================================================
+
+  Example placement inside AndroidManifest.xml:
+
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+              package="com.playnexa.app">
+
+        <!-- >>> PASTE THE BLOCK BELOW HERE <<< -->
+
+        <application
+            android:allowBackup="true"
+            ...>
+            ...
+        </application>
+    </manifest>
+-->
+
+<!-- ============================ CUT BELOW THIS LINE ============================ -->
+    <!-- Android 13+ (API 33+): granular media permissions -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+
+    <!-- Android 12 and below (API ≤ 32): legacy storage permission -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <!-- Optional: if you ever want to WRITE / modify media (e.g. saving
+         downloaded files back to the gallery), uncomment these:
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+    -->
+<!-- ============================ CUT ABOVE THIS LINE ============================ -->

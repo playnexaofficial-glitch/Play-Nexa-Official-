@@ -1,0 +1,805 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-pn-bg: #0D0D0D;
+  --color-pn-card: #1A1A2E;
+  --color-pn-border: #1E293B;
+  --color-pn-purple: #7C3AED;
+  --color-pn-cyan: #06B6D4;
+  --color-pn-muted: #9CA3AF;
+  --color-pn-secondary: #1A1A2E;
+  --color-pn-success: #22C55E;
+  --animate-shimmer: shimmer 1.5s ease-in-out infinite;
+  --animate-fade-in: fade-in 300ms ease-out;
+  --animate-progress-bar: progress-bar 2s ease-in-out infinite;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: #0D0D0D;
+  --foreground: #FFFFFF;
+  --card: #1A1A2E;
+  --card-foreground: #FFFFFF;
+  --popover: #1A1A2E;
+  --popover-foreground: #FFFFFF;
+  --primary: #7C3AED;
+  --primary-foreground: #FFFFFF;
+  --secondary: #1A1A2E;
+  --secondary-foreground: #FFFFFF;
+  --muted: #1A1A2E;
+  --muted-foreground: #9CA3AF;
+  --accent: #7C3AED;
+  --accent-foreground: #FFFFFF;
+  --destructive: #EF4444;
+  --border: #1E293B;
+  --input: #1E293B;
+  --ring: #7C3AED;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0D0D0D;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Hide scrollbar for horizontal scroll rows */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Range input styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: #1E293B;
+  border-radius: 2px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: #7C3AED;
+  margin-top: -5px;
+  border: 2px solid #0D0D0D;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: #1E293B;
+  border-radius: 2px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: #7C3AED;
+  border: 2px solid #0D0D0D;
+}
+
+/* Safe area for bottom nav */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Shimmer animation keyframes */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Fade in animation */
+@keyframes fade-in {
+  0% { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Progress bar animation */
+@keyframes progress-bar {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
+/* Download spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.download-spinner {
+  animation: spin 0.8s linear infinite;
+}
+
+/* Spin slow for album art */
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+/* Equalizer bar animation */
+@keyframes eq-bar {
+  0%, 100% { height: 4px; }
+  50% { height: 32px; }
+}
+
+.animate-eq-bar {
+  animation: eq-bar 0.8s ease-in-out infinite;
+}
+
+/* Page enter animation — slide in from right */
+@keyframes pn-page-enter {
+  0% { opacity: 0; transform: translateX(100%); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+.pn-page-enter {
+  animation: pn-page-enter 150ms ease-out forwards;
+}
+
+/* Vinyl disc spin animation */
+@keyframes music-vinyl-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.music-vinyl-spin {
+  animation: music-vinyl-spin 4s linear infinite;
+  animation-play-state: var(--vinyl-state, paused);
+}
+
+/* Equalizer bar animation */
+@keyframes music-eq-bar {
+  0%, 100% { height: 3px; }
+  25% { height: 14px; }
+  50% { height: 20px; }
+  75% { height: 8px; }
+}
+
+.music-eq-bar {
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(to top, #7C3AED, #06B6D4);
+  animation: music-eq-bar 0.6s ease-in-out infinite;
+  animation-play-state: var(--eq-state, paused);
+}
+
+/* Now Playing seekbar styling */
+.np-seekbar::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+}
+
+.np-seekbar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #7C3AED;
+  margin-top: -6px;
+  border: 2px solid #0D0D0D;
+  box-shadow: 0 0 6px rgba(124, 58, 237, 0.5);
+}
+
+.np-seekbar::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+}
+
+.np-seekbar::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #7C3AED;
+  border: 2px solid #0D0D0D;
+  box-shadow: 0 0 6px rgba(124, 58, 237, 0.5);
+}
+
+/* Now Playing volume slider styling */
+.np-volume::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 2px;
+}
+
+.np-volume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  margin-top: -5.5px;
+  border: none;
+}
+
+.np-volume::-moz-range-track {
+  height: 3px;
+  border-radius: 2px;
+}
+
+.np-volume::-moz-range-thumb {
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: none;
+}
+
+/* Slide up animation for bottom sheets */
+@keyframes slide-up {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slide-up 300ms ease-out;
+}
+
+/* Pulse glow for active platform detection */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+/* Shake animation for PIN dial */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Music EQ bar nth-child timing variants */
+.music-eq-bar:nth-child(1) { animation-duration: 0.4s; }
+.music-eq-bar:nth-child(2) { animation-duration: 0.6s; }
+.music-eq-bar:nth-child(3) { animation-duration: 0.5s; }
+.music-eq-bar:nth-child(4) { animation-duration: 0.7s; }
+.music-eq-bar:nth-child(5) { animation-duration: 0.45s; }
+
+/* Marquee animation for long song titles */
+@keyframes music-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.music-marquee {
+  overflow: visible;
+  white-space: nowrap;
+  animation: music-marquee 8s linear infinite;
+}
+
+/* Video seekbar thumb styling */
+.video-seek-thumb::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+}
+
+.video-seek-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #7C3AED;
+  cursor: pointer;
+  border: 2px solid #000000;
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.5);
+  margin-top: -6px;
+  transform: scale(1);
+  transition: transform 100ms ease;
+}
+
+.video-seek-thumb:active::-webkit-slider-thumb {
+  transform: scale(1.3);
+}
+
+.video-seek-thumb::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+}
+
+.video-seek-thumb::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #7C3AED;
+  cursor: pointer;
+  border: 2px solid #000000;
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.5);
+}
+
+/* Video double-tap ripple */
+@keyframes video-ripple {
+  0% { transform: scale(0); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.video-ripple {
+  animation: video-ripple 0.4s ease-out forwards;
+}
+
+/* Video speed badge pulse */
+@keyframes video-speed-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.video-speed-badge {
+  animation: video-speed-pulse 0.8s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MUSIC PLAYER — Additional .music-* / .pn-* classes
+   Only additions — no changes to existing CSS
+   ══════════════════════════════════════════════════════════════ */
+
+/* NowPlayingBanner entrance: slide down from top */
+@keyframes music-banner-enter {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(0); }
+}
+
+.music-banner-enter {
+  animation: music-banner-enter 150ms ease-out forwards;
+}
+
+/* Seekbar thumb scale on active */
+.music-seek-thumb {
+  transition: transform 100ms ease;
+}
+
+.music-seek-thumb:active {
+  transform: translate(-50%, -50%) scale(1.3);
+}
+
+/* Button press effect for music controls */
+.music-btn-press {
+  transition: transform 100ms ease;
+}
+
+.music-btn-press:active {
+  transform: scale(0.96);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-pn-bg text-foreground;
+    font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SETTINGS PAGE — performance / theme toggles
+   These classes / variables are toggled by the Settings page so
+   the user sees a real visible effect when they flip a switch.
+   ══════════════════════════════════════════════════════════════ */
+
+/* Default transition duration (used by .pn-smooth elements). */
+:root {
+  --pn-transition: 200ms;
+}
+
+/* Smooth Mode: when an element has .pn-smooth, transitions follow
+   the --pn-transition variable. Setting --pn-transition to 0ms
+   (via Smooth Mode off) effectively disables the animation. */
+.pn-smooth {
+  transition: background-color var(--pn-transition) ease,
+              color var(--pn-transition) ease,
+              transform var(--pn-transition) ease,
+              opacity var(--pn-transition) ease,
+              border-color var(--pn-transition) ease;
+}
+
+/* Battery Saver: dim the screen + reduce glow effects. */
+html.battery-saver {
+  filter: brightness(0.85) saturate(0.9);
+}
+
+html.battery-saver * {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* Lite Animation: kill all non-essential animations + transitions. */
+html.lite-animation *,
+html.lite-animation *::before,
+html.lite-animation *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* When BOTH battery-saver + lite-animation are on, the page should
+   be as efficient as possible — disable even the spinners. */
+html.battery-saver.lite-animation .animate-spin,
+html.battery-saver.lite-animation .download-spinner,
+html.battery-saver.lite-animation .animate-spin-slow {
+  animation: none !important;
+}
+
+/* Theme variants via [data-theme] attribute (set by Settings page). */
+
+/* AMOLED "true black" theme — pure #000 background. */
+html[data-theme="amoled"] {
+  --background: #000000;
+  --pn-bg: #000000;
+}
+
+html[data-theme="amoled"] body {
+  background-color: #000000;
+}
+
+/* Neon theme — purple-tinted background with brighter accents. */
+html[data-theme="neon"] {
+  --background: #0A0014;
+  --pn-bg: #0A0014;
+  --primary: #A855F7;
+  --accent: #06B6D4;
+}
+
+html[data-theme="neon"] body {
+  background-color: #0A0014;
+}
+
+/* Dark theme (default) — keep the existing #0D0D0D base. */
+html[data-theme="dark"] {
+  --background: #0D0D0D;
+  --pn-bg: #0D0D0D;
+}
+
+/* Legacy light-mode class (still toggled by Profile page for
+   backward compatibility with older code). */
+html.light-mode {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+html.light-mode img,
+html.light-mode video,
+html.light-mode picture {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   LocalMusicPlayer (LocalMusicPlayer.tsx) — animations
+   ───────────────────────────────────────────────────────────────────── */
+
+/* Mini inline equalizer (4 bars) shown on the active row of the song list */
+@keyframes pn-mini-eq {
+  0% { height: 30%; }
+  100% { height: 100%; }
+}
+
+.pn-mini-eq {
+  animation: pn-mini-eq 800ms ease-in-out infinite alternate;
+}
+
+/* Marquee for the mini player's title — paired copies translate -50% */
+@keyframes pn-marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.pn-marquee {
+  animation: pn-marquee 12s linear infinite;
+}
+
+/* Slow vinyl spin for the expanded player's album art */
+@keyframes pn-vinyl-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.pn-vinyl-spin {
+  animation: pn-vinyl-spin 12s linear infinite;
+}
+
+/* ─── Premium expanded player (glassmorphism) ─── */
+
+/* Rhythmic pulse halo around the album art while music plays */
+@keyframes pn-art-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.9;
+  }
+}
+.pn-art-pulse {
+  animation: pn-art-pulse 2.4s ease-in-out infinite;
+}
+
+/* Soft slow rotation of the disc (slower than vinyl-spin, more cinematic) */
+@keyframes pn-disc-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.pn-disc-spin {
+  animation: pn-disc-spin 22s linear infinite;
+}
+
+/* Slide-up entrance for the expanded sheet */
+@keyframes pn-sheet-up {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.pn-sheet-up {
+  animation: pn-sheet-up 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Fade-in for the title/controls once the sheet is visible */
+@keyframes pn-fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.pn-fade-up {
+  animation: pn-fade-up 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Equalizer pulse for the play button glow */
+@keyframes pn-btn-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 0 1px rgba(124, 58, 237, 0.4),
+      0 14px 38px rgba(124, 58, 237, 0.35),
+      0 0 60px rgba(124, 58, 237, 0.25);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(124, 58, 237, 0.6),
+      0 18px 48px rgba(124, 58, 237, 0.5),
+      0 0 90px rgba(124, 58, 237, 0.4);
+  }
+}
+.pn-btn-glow {
+  animation: pn-btn-glow 2.4s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   ENHANCED LIVE EQUALIZER (4 dancing bars, staggered, smooth)
+   Replaces the older 2-state .pn-mini-eq with a richer 4-bar
+   "live DJ visualizer" used in the song list row.
+   ───────────────────────────────────────────────────────────────────── */
+@keyframes pn-eq-bar {
+  0%   { transform: scaleY(0.25); }
+  20%  { transform: scaleY(0.95); }
+  40%  { transform: scaleY(0.45); }
+  60%  { transform: scaleY(1);    }
+  80%  { transform: scaleY(0.35); }
+  100% { transform: scaleY(0.25); }
+}
+
+.pn-eq-bar {
+  transform-origin: bottom center;
+  animation: pn-eq-bar 900ms cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+/* Slow ambient drift for the multicolor radial glows behind the
+   album art — gives the "calming" effect the user asked for. */
+@keyframes pn-aurora-drift {
+  0%   { transform: translate3d(-3%, -2%, 0) scale(1);    opacity: 0.55; }
+  50%  { transform: translate3d( 4%,  3%, 0) scale(1.08); opacity: 0.85; }
+  100% { transform: translate3d(-3%, -2%, 0) scale(1);    opacity: 0.55; }
+}
+.pn-aurora-drift {
+  animation: pn-aurora-drift 14s ease-in-out infinite;
+}
+@keyframes pn-aurora-drift-2 {
+  0%   { transform: translate3d( 3%,  2%, 0) scale(1.05); opacity: 0.55; }
+  50%  { transform: translate3d(-4%, -3%, 0) scale(1);    opacity: 0.85; }
+  100% { transform: translate3d( 3%,  2%, 0) scale(1.05); opacity: 0.55; }
+}
+.pn-aurora-drift-2 {
+  animation: pn-aurora-drift-2 18s ease-in-out infinite;
+}
+
+/* Gentle pulse for the music glyph inside album art (only when playing) */
+@keyframes pn-glyph-pulse {
+  0%, 100% { transform: scale(1);    opacity: 0.92; }
+  50%      { transform: scale(1.08); opacity: 1;    }
+}
+.pn-glyph-pulse {
+  animation: pn-glyph-pulse 2.6s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   PREMIUM REDESIGN v3 — additional animations for both players
+   ───────────────────────────────────────────────────────────────────── */
+
+/* Slow vinyl record rotation — used on the music expanded player art */
+@keyframes pn-vinyl-record-spin {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}
+.pn-vinyl-record-spin {
+  animation: pn-vinyl-record-spin 18s linear infinite;
+  animation-play-state: paused;
+}
+.pn-vinyl-record-spin.is-playing {
+  animation-play-state: running;
+}
+
+/* Soft floating "breath" for the floating mini-player pill */
+@keyframes pn-float-breath {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+.pn-float-breath {
+  animation: pn-float-breath 5s ease-in-out infinite;
+}
+
+/* Subtle shimmer for video card thumbnail skeleton */
+@keyframes pn-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.pn-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.02) 0%,
+    rgba(255,255,255,0.07) 50%,
+    rgba(255,255,255,0.02) 100%
+  );
+  background-size: 200% 100%;
+  animation: pn-shimmer 1.6s ease-in-out infinite;
+}
+
+/* Card lift hover for premium video cards */
+.pn-card-lift {
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+.pn-card-lift:hover {
+  transform: translateY(-2px);
+}
+
+/* Slow pulse for the play overlay on video cards */
+@keyframes pn-play-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.45);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(124, 58, 237, 0);
+    transform: scale(1.06);
+  }
+}
+.pn-play-pulse {
+  animation: pn-play-pulse 2.4s ease-out infinite;
+}
+
+/* Cinematic slide-up for the video immersive player */
+@keyframes pn-cine-up {
+  0%   { opacity: 0; transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1);    }
+}
+.pn-cine-up {
+  animation: pn-cine-up 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Slow drift for the immersive player's ambient halo */
+@keyframes pn-halo-drift {
+  0%, 100% { opacity: 0.35; transform: scale(1);    }
+  50%      { opacity: 0.55; transform: scale(1.04); }
+}
+.pn-halo-drift {
+  animation: pn-halo-drift 6s ease-in-out infinite;
+}
+
+/* Speed menu fade-in for video player */
+@keyframes pn-menu-pop {
+  0%   { opacity: 0; transform: translateY(-6px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+.pn-menu-pop {
+  animation: pn-menu-pop 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Smooth pulse for the buffering ring */
+@keyframes pn-buffer-ring {
+  0%   { transform: rotate(0deg);   }
+  100% { transform: rotate(360deg); }
+}
+.pn-buffer-ring {
+  animation: pn-buffer-ring 900ms linear infinite;
+}

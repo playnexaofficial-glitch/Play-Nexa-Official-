@@ -1,0 +1,6 @@
+{
+  "name": "Play Nexa",
+  "description": "A feature-rich media platform imported from GitHub.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

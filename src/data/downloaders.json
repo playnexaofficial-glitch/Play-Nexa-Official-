@@ -1,0 +1,287 @@
+{
+  "youtube": {
+    "video": [
+      {
+        "id": "ssyoutube",
+        "name": "SSYouTube",
+        "url": "",
+        "buildUrl": "ssyoutube",
+        "note": "Domain replacement: youtube.com → ssyoutube.com — most reliable YouTube method"
+      },
+      {
+        "id": "savefrom_yt",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway: en.savefrom.net/?url= — auto-detects YouTube"
+      },
+      {
+        "id": "y2mate",
+        "name": "Y2Mate",
+        "url": "https://www.y2mate.com/youtube/",
+        "buildUrl": "id",
+        "note": "Append videoId to URL path"
+      },
+      {
+        "id": "sfrom_yt",
+        "name": "sfrom.net",
+        "url": "",
+        "buildUrl": "sfrom",
+        "note": "Shortcut: sfrom.net/{raw_url} — redirects to SaveFrom"
+      }
+    ],
+    "audio": [
+      {
+        "id": "savefrom_yt_audio",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway — select audio format on page"
+      },
+      {
+        "id": "ytmp3",
+        "name": "YTMP3",
+        "url": "https://ytmp3.cc/en13/",
+        "buildUrl": "param",
+        "param": "url",
+        "note": "YouTube to MP3 converter"
+      }
+    ]
+  },
+  "tiktok": {
+    "video": [
+      {
+        "id": "savefrom_tt",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway — handles vt.tiktok.com, vm.tiktok.com, desktop links"
+      },
+      {
+        "id": "snapsave_tt",
+        "name": "SnapSave",
+        "url": "https://snapsave.app/download",
+        "buildUrl": "param",
+        "param": "url",
+        "note": "Dedicated TikTok node — verified endpoint /download?url="
+      },
+      {
+        "id": "snaptik",
+        "name": "SnapTik",
+        "url": "https://snaptik.app/",
+        "buildUrl": "param",
+        "param": "url",
+        "note": "TikTok no watermark downloader"
+      },
+      {
+        "id": "sfrom_tt",
+        "name": "sfrom.net",
+        "url": "",
+        "buildUrl": "sfrom",
+        "note": "Shortcut gateway — universal fallback"
+      }
+    ],
+    "audio": [
+      {
+        "id": "savefrom_tt_audio",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway — select audio format on page"
+      }
+    ]
+  },
+  "facebook": {
+    "video": [
+      {
+        "id": "savefrom_fb",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway — handles FB videos, reels, watch, fb.watch"
+      },
+      {
+        "id": "snapsave_fb",
+        "name": "SnapSave",
+        "url": "https://snapsave.app/download",
+        "buildUrl": "param",
+        "param": "url",
+        "note": "Dedicated FB downloader — verified /download?url="
+      },
+      {
+        "id": "sfrom_fb",
+        "name": "sfrom.net",
+        "url": "",
+        "buildUrl": "sfrom",
+        "note": "Shortcut gateway"
+      }
+    ],
+    "audio": [
+      {
+        "id": "savefrom_fb_audio",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway"
+      }
+    ]
+  },
+  "instagram": {
+    "video": [
+      {
+        "id": "savefrom_ig",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway — handles IG reels, posts, stories, instagr.am, ig.me"
+      },
+      {
+        "id": "snapinsta",
+        "name": "SnapInsta",
+        "url": "https://snapinsta.app/",
+        "buildUrl": "param",
+        "param": "url",
+        "note": "Dedicated IG downloader"
+      },
+      {
+        "id": "sfrom_ig",
+        "name": "sfrom.net",
+        "url": "",
+        "buildUrl": "sfrom",
+        "note": "Shortcut gateway"
+      }
+    ],
+    "audio": [
+      {
+        "id": "savefrom_ig_audio",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway"
+      }
+    ]
+  },
+  "twitter": {
+    "video": [
+      {
+        "id": "savefrom_tw",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway — handles twitter.com and x.com"
+      },
+      {
+        "id": "twitsave",
+        "name": "TwitSave",
+        "url": "https://twitsave.com/info",
+        "buildUrl": "param",
+        "param": "url",
+        "note": "Dedicated Twitter/X downloader — verified /info?url="
+      },
+      {
+        "id": "sfrom_tw",
+        "name": "sfrom.net",
+        "url": "",
+        "buildUrl": "sfrom",
+        "note": "Shortcut gateway"
+      }
+    ],
+    "audio": [
+      {
+        "id": "savefrom_tw_audio",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway"
+      }
+    ]
+  },
+  "vimeo": {
+    "video": [
+      {
+        "id": "savefrom_vm",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway — handles Vimeo"
+      },
+      {
+        "id": "sfrom_vm",
+        "name": "sfrom.net",
+        "url": "",
+        "buildUrl": "sfrom",
+        "note": "Shortcut gateway"
+      }
+    ],
+    "audio": [
+      {
+        "id": "savefrom_vm_audio",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway"
+      }
+    ]
+  },
+  "soundcloud": {
+    "video": [],
+    "audio": [
+      {
+        "id": "savefrom_sc",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway — handles SoundCloud tracks"
+      },
+      {
+        "id": "klickaud",
+        "name": "KlickAud",
+        "url": "https://klickaud.co/",
+        "buildUrl": "param",
+        "param": "url",
+        "note": "Dedicated SoundCloud downloader"
+      },
+      {
+        "id": "sfrom_sc",
+        "name": "sfrom.net",
+        "url": "",
+        "buildUrl": "sfrom",
+        "note": "Shortcut gateway"
+      }
+    ]
+  },
+  "universal": {
+    "video": [
+      {
+        "id": "sfrom_universal",
+        "name": "sfrom.net",
+        "url": "",
+        "buildUrl": "sfrom",
+        "note": "Universal shortcut: sfrom.net/{raw_url} — handles ANY video link"
+      },
+      {
+        "id": "savefrom_universal",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway: en.savefrom.net/?url= — auto-detects any platform"
+      }
+    ],
+    "audio": [
+      {
+        "id": "savefrom_universal_audio",
+        "name": "SaveFrom",
+        "url": "https://en.savefrom.net/",
+        "buildUrl": "savefrom",
+        "note": "Universal gateway — select audio format on page"
+      },
+      {
+        "id": "sfrom_universal_audio",
+        "name": "sfrom.net",
+        "url": "",
+        "buildUrl": "sfrom",
+        "note": "Universal shortcut gateway"
+      }
+    ]
+  }
+}

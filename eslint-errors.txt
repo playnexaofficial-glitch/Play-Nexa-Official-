@@ -1,0 +1,612 @@
+
+/app/applet/download/generate-master-prompt.js
+  6:5   error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  7:12  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+/app/applet/src/app/admin/keys/page.tsx
+   50:21  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/app/admin/keys/page.tsx:50:21
+  48 |   }, [])
+  49 |
+> 50 |   useEffect(() => { fetchKeys() }, [fetchKeys])
+     |                     ^^^^^^^^^ Avoid calling setState() directly within an effect
+  51 |
+  52 |   // ── Set active key ──
+  53 |                                            react-hooks/set-state-in-effect
+  117:7   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/app/admin/keys/page.tsx:117:7
+  115 |   useEffect(() => {
+  116 |     if (autoRotate && keys.length > 1) {
+> 117 |       triggerAutoRotate()
+      |       ^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  118 |     }
+  119 |      
+  120 |   }, [keys, autoRotate])  react-hooks/set-state-in-effect
+
+/app/applet/src/app/admin/layout.tsx
+  24:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/app/admin/layout.tsx:24:7
+  22 |   useEffect(() => {
+  23 |     if (isLoginPage) {
+> 24 |       setAuthChecked(true)
+     |       ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  25 |       return
+  26 |     }
+  27 |                              react-hooks/set-state-in-effect
+  37:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/app/admin/layout.tsx:37:5
+  35 |   // Close sidebar on route change
+  36 |   useEffect(() => {
+> 37 |     setSidebarOpen(false)
+     |     ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  38 |   }, [pathname])
+  39 |
+  40 |   if (isLoginPage) {  react-hooks/set-state-in-effect
+
+/app/applet/src/app/admin/vault/page.tsx
+  95:21  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/app/admin/vault/page.tsx:95:21
+  93 |   }, [])
+  94 |
+> 95 |   useEffect(() => { fetchVault() }, [fetchVault])
+     |                     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  96 |
+  97 |   // ── Save key value ──
+  98 |  react-hooks/set-state-in-effect
+
+/app/applet/src/app/local/page.tsx
+  101:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/app/local/page.tsx:101:5
+   99 |   // ── Reset search when switching tabs ──
+  100 |   useEffect(() => {
+> 101 |     setSearchQuery('')
+      |     ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  102 |   }, [activeView])
+  103 |
+  104 |   return (  react-hooks/set-state-in-effect
+
+/app/applet/src/app/movies/[id]/page.tsx
+  95:19  error  React Hook "useMemo" is called conditionally. React Hooks must be called in the exact same order in every component render                                                                                                                                                                                                                                                                                                                                                                                                                                                                           react-hooks/rules-of-hooks
+  97:6   error  Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. This dependency may be mutated later, which could cause the value to change unexpectedly.
+
+/app/applet/src/app/movies/[id]/page.tsx:97:6
+   95 |   const related = useMemo(
+   96 |     () => getRelated(movie.id, movie.genre, 5),
+>  97 |     [movie.id, movie.genre],
+      |      ^^^^^ This dependency may be modified later
+   98 |   )
+   99 |
+  100 |   const handleShare = async () => {             react-hooks/preserve-manual-memoization
+  97:16  error  Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. This dependency may be mutated later, which could cause the value to change unexpectedly.
+
+/app/applet/src/app/movies/[id]/page.tsx:97:16
+   95 |   const related = useMemo(
+   96 |     () => getRelated(movie.id, movie.genre, 5),
+>  97 |     [movie.id, movie.genre],
+      |                ^^^^^ This dependency may be modified later
+   98 |   )
+   99 |
+  100 |   const handleShare = async () => {  react-hooks/preserve-manual-memoization
+
+/app/applet/src/components/OfflineIndicator.tsx
+  18:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/components/OfflineIndicator.tsx:18:5
+  16 |
+  17 |     // Set initial state
+> 18 |     setState(navigator.onLine ? 'online' : 'offline')
+     |     ^^^^^^^^ Avoid calling setState() directly within an effect
+  19 |
+  20 |     const handleOffline = () => setState('offline')
+  21 |     const handleOnline = () => {  react-hooks/set-state-in-effect
+
+/app/applet/src/components/games/GameCard.tsx
+  149:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/components/games/GameCard.tsx:149:7
+  147 |   useEffect(() => {
+  148 |     if (error) {
+> 149 |       setShowError(true)
+      |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  150 |       const timer = setTimeout(() => {
+  151 |         setShowError(false)
+  152 |         clearError()  react-hooks/set-state-in-effect
+
+/app/applet/src/components/local/DeviceMusicExplorer.tsx
+   96:27  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  158:26  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+/app/applet/src/components/local/MiniPlayer.tsx
+  92:32  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/app/applet/src/components/local/MiniPlayer.tsx:92:32
+  90 |           <div
+  91 |             className="h-full bg-[#7C5CFF] transition-all duration-300 ease-linear"
+> 92 |             style={{ width: `${progressRef.current}%` }}
+     |                                ^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  93 |           />
+  94 |         </div>
+  95 |  react-hooks/refs
+
+/app/applet/src/components/local/MusicList.tsx
+  45:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/components/local/MusicList.tsx:45:9
+  43 |           id: string; name: string; size: number; duration: number
+  44 |         }>
+> 45 |         setTracks(meta.map(t => ({
+     |         ^^^^^^^^^ Avoid calling setState() directly within an effect
+  46 |           ...t,
+  47 |           url: '',
+  48 |           file: null as any,  react-hooks/set-state-in-effect
+
+/app/applet/src/components/local/PinDial.tsx
+  28:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/components/local/PinDial.tsx:28:7
+  26 |   useEffect(() => {
+  27 |     if (error) {
+> 28 |       setShake(true)
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  29 |       setPin('')
+  30 |       const t = setTimeout(() => setShake(false), 500)
+  31 |       return () => clearTimeout(t)  react-hooks/set-state-in-effect
+
+/app/applet/src/components/local/SafeFolder.tsx
+  89:28  warning  Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+
+/app/applet/src/components/local/SafeFolderModal.tsx
+  111:28  warning  Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+
+/app/applet/src/components/local/VideoGrid.tsx
+  42:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/components/local/VideoGrid.tsx:42:9
+  40 |           id: string; name: string; size: number; duration: number
+  41 |         }>
+> 42 |         setVideos(meta.map(v => ({
+     |         ^^^^^^^^^ Avoid calling setState() directly within an effect
+  43 |           ...v,
+  44 |           url: '',
+  45 |           file: null as any,  react-hooks/set-state-in-effect
+
+/app/applet/src/components/movies/SocialRow.tsx
+  29:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/components/movies/SocialRow.tsx:29:7
+  27 |         localStorage.getItem('pn_likes') || '[]',
+  28 |       )
+> 29 |       setLiked(likes.includes(movie.id))
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  30 |     } catch {
+  31 |       setLiked(false)
+  32 |     }  react-hooks/set-state-in-effect
+
+/app/applet/src/components/profile/PrivateLocker.tsx
+   283:33  error    Error: Cannot access variable before it is declared
+
+`generateVideoThumbnail` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+/app/applet/src/components/profile/PrivateLocker.tsx:283:33
+  281 |         if (mediaType === 'video') {
+  282 |           try {
+> 283 |             const thumb = await generateVideoThumbnail(file)
+      |                                 ^^^^^^^^^^^^^^^^^^^^^^ `generateVideoThumbnail` accessed before it is declared
+  284 |             if (thumb) thumbUrl = thumb
+  285 |           } catch {}
+  286 |         }
+
+/app/applet/src/components/profile/PrivateLocker.tsx:317:3
+  315 |
+  316 |   // ── Canvas thumbnail generator (APK-safe) ──
+> 317 |   async function generateVideoThumbnail(file: File): Promise<string | undefined> {
+      |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 318 |     return new Promise((resolve) => {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 319 |       try {
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 361 |     })
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 362 |   }
+      | ^^^^ `generateVideoThumbnail` is declared here
+  363 |
+  364 |   // ── Unhide ──
+  365 |   const handleUnhide = useCallback((id: string) => {  react-hooks/immutability
+   784:44  warning  Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               jsx-a11y/alt-text
+   857:33  warning  Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               jsx-a11y/alt-text
+  1015:25  warning  Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               jsx-a11y/alt-text
+
+/app/applet/src/components/profile/StatCounter.tsx
+  37:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/components/profile/StatCounter.tsx:37:7
+  35 |     // If target hasn't changed or is 0, just snap.
+  36 |     if (target <= 0) {
+> 37 |       setValue(0);
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  38 |       fromRef.current = 0;
+  39 |       return;
+  40 |     }  react-hooks/set-state-in-effect
+
+/app/applet/src/components/settings/CalculatorDisguise.tsx
+  422:10  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/app/applet/src/components/settings/CalculatorDisguise.tsx:422:10
+  420 |       {/* ── Button grid ── */}
+  421 |       <div className="grid grid-cols-4 gap-[1px] bg-[#1a1a1a]">
+> 422 |         {buttons.map((btn, i) => {
+      |          ^^^^^^^ Cannot access ref value during render
+  423 |           const isOp = btn.style === 'op' || btn.style === 'op-accent'
+  424 |           const isFunc = btn.style === 'func'
+  425 |           const isWide = btn.style === 'num-wide'      react-hooks/refs
+  422:10  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/app/applet/src/components/settings/CalculatorDisguise.tsx:422:10
+  420 |       {/* ── Button grid ── */}
+  421 |       <div className="grid grid-cols-4 gap-[1px] bg-[#1a1a1a]">
+> 422 |         {buttons.map((btn, i) => {
+      |          ^^^^^^^^^^^ Cannot access ref value during render
+  423 |           const isOp = btn.style === 'op' || btn.style === 'op-accent'
+  424 |           const isFunc = btn.style === 'func'
+  425 |           const isWide = btn.style === 'num-wide'  react-hooks/refs
+
+/app/applet/src/hooks/useAuth.ts
+  75:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/hooks/useAuth.ts:75:7
+  73 |         })
+  74 |     } else {
+> 75 |       setSupabaseProfile(null)
+     |       ^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  76 |     }
+  77 |   }, [globalUser])
+  78 |  react-hooks/set-state-in-effect
+
+/app/applet/src/hooks/useGameData.ts
+  128:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/hooks/useGameData.ts:128:5
+  126 |   useEffect(() => {
+  127 |     mountedRef.current = true
+> 128 |     refresh()
+      |     ^^^^^^^ Avoid calling setState() directly within an effect
+  129 |     return () => { mountedRef.current = false }
+  130 |   }, [refresh])
+  131 |  react-hooks/set-state-in-effect
+  149:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/hooks/useGameData.ts:149:5
+  147 |   useEffect(() => {
+  148 |     mountedRef.current = true
+> 149 |     refresh()
+      |     ^^^^^^^ Avoid calling setState() directly within an effect
+  150 |     return () => { mountedRef.current = false }
+  151 |   }, [refresh])
+  152 |  react-hooks/set-state-in-effect
+
+/app/applet/src/hooks/useLibrary.ts
+  35:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/hooks/useLibrary.ts:35:5
+  33 |
+  34 |   useEffect(() => {
+> 35 |     refresh()
+     |     ^^^^^^^ Avoid calling setState() directly within an effect
+  36 |   }, [refresh])
+  37 |
+  38 |   const remove = useCallback(  react-hooks/set-state-in-effect
+
+/app/applet/src/hooks/useMovies.ts
+   64:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/hooks/useMovies.ts:64:5
+  62 |
+  63 |     let cancelled = false
+> 64 |     setLoading(true)
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  65 |     setError(null)
+  66 |
+  67 |     fetchMoviesFromDB(category, 12)                                                                  react-hooks/set-state-in-effect
+  158:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/hooks/useMovies.ts:158:5
+  156 |
+  157 |     let cancelled = false
+> 158 |     setLoading(true)
+      |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  159 |     setError(null)
+  160 |
+  161 |     fetchDetailFromDB(videoId)                                                               react-hooks/set-state-in-effect
+  197:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/hooks/useMovies.ts:197:5
+  195 |
+  196 |     let cancelled = false
+> 197 |     setLoading(true)
+      |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  198 |
+  199 |     const searchQuery = title.split(' ').slice(0, 4).join(' ')
+  200 |     fetchRelatedFromDB(searchQuery, [], '', 10)  react-hooks/set-state-in-effect
+
+/app/applet/src/hooks/useMusicPlayer.ts
+  274:7   error  Error: Cannot access variable before it is declared
+
+`destroyNativeControls` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+/app/applet/src/hooks/useMusicPlayer.ts:274:7
+  272 |         sleepRef.current = null
+  273 |       }
+> 274 |       destroyNativeControls()
+      |       ^^^^^^^^^^^^^^^^^^^^^ `destroyNativeControls` accessed before it is declared
+  275 |     }
+  276 |   }, [])
+  277 |
+
+/app/applet/src/hooks/useMusicPlayer.ts:406:3
+  404 |   useEffect(() => { updateNativePlayStateRef.current = updateNativePlayState }, [updateNativePlayState])
+  405 |
+> 406 |   const destroyNativeControls = useCallback(async () => {
+      |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 407 |     if (!isNativePlatform()) return
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 408 |     try {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 409 |       await CapacitorMusicControls.destroy()
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 410 |     } catch {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 411 |       // Native controls destroy failed
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 412 |     }
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 413 |   }, [])
+      | ^^^^^^^^^ `destroyNativeControls` is declared here
+  414 |
+  415 |   // ══════════════════════════════════════════════════════════
+  416 |   // PUBLIC FUNCTIONS  react-hooks/immutability
+  480:21  error  Error: This value cannot be modified
+
+Modifying a value previously passed as an argument to a hook is not allowed. Consider moving the modification before calling the hook.
+
+/app/applet/src/hooks/useMusicPlayer.ts:480:21
+  478 |   // ── Pause ref for native controls callback ────────────────
+  479 |   const pauseRef = useRef(pause)
+> 480 |   useEffect(() => { pauseRef.current = pause }, [pause])
+      |                     ^^^^^^^^ `pauseRef` cannot be modified
+  481 |
+  482 |   // ── Resume playback ───────────────────────────────────────
+  483 |   const resume = useCallback(() => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react-hooks/immutability
+  501:21  error  Error: This value cannot be modified
+
+Modifying a value previously passed as an argument to a hook is not allowed. Consider moving the modification before calling the hook.
+
+/app/applet/src/hooks/useMusicPlayer.ts:501:21
+  499 |   // ── Resume ref for native controls callback ───────────────
+  500 |   const resumeRef = useRef(resume)
+> 501 |   useEffect(() => { resumeRef.current = resume }, [resume])
+      |                     ^^^^^^^^^ `resumeRef` cannot be modified
+  502 |
+  503 |   // ── Stop playback and reset ───────────────────────────────
+  504 |   const stop = useCallback(() => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     react-hooks/immutability
+  558:21  error  Error: This value cannot be modified
+
+Modifying a value previously passed as an argument to a hook is not allowed. Consider moving the modification before calling the hook.
+
+/app/applet/src/hooks/useMusicPlayer.ts:558:21
+  556 |   // ── Next ref for Media Session ────────────────────────────
+  557 |   const nextRef = useRef(next)
+> 558 |   useEffect(() => { nextRef.current = next }, [next])
+      |                     ^^^^^^^ `nextRef` cannot be modified
+  559 |
+  560 |   // ── Previous track ────────────────────────────────────────
+  561 |   const previous = useCallback(() => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               react-hooks/immutability
+  606:21  error  Error: This value cannot be modified
+
+Modifying a value previously passed as an argument to a hook is not allowed. Consider moving the modification before calling the hook.
+
+/app/applet/src/hooks/useMusicPlayer.ts:606:21
+  604 |   // ── Previous ref for Media Session ────────────────────────
+  605 |   const previousRef = useRef(previous)
+> 606 |   useEffect(() => { previousRef.current = previous }, [previous])
+      |                     ^^^^^^^^^^^ `previousRef` cannot be modified
+  607 |
+  608 |   // ── Seek to position ──────────────────────────────────────
+  609 |   const seekTo = useCallback((seconds: number) => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      react-hooks/immutability
+
+/app/applet/src/hooks/usePlaylist.ts
+  34:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/src/hooks/usePlaylist.ts:34:5
+  32 |
+  33 |   useEffect(() => {
+> 34 |     refresh()
+     |     ^^^^^^^ Avoid calling setState() directly within an effect
+  35 |   }, [refresh])
+  36 |
+  37 |   const create = useCallback(  react-hooks/set-state-in-effect
+
+/app/applet/src/lib/disguise-context.tsx
+  81:5  error  Error: Cannot access variable before it is declared
+
+`loadHiddenPool` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+/app/applet/src/lib/disguise-context.tsx:81:5
+  79 |   // ── Load hidden pool from IndexedDB on mount ──
+  80 |   useEffect(() => {
+> 81 |     loadHiddenPool()
+     |     ^^^^^^^^^^^^^^ `loadHiddenPool` accessed before it is declared
+  82 |   }, [])
+  83 |
+  84 |   const loadHiddenPool = useCallback(async () => {
+
+/app/applet/src/lib/disguise-context.tsx:84:3
+  82 |   }, [])
+  83 |
+> 84 |   const loadHiddenPool = useCallback(async () => {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 85 |     try {
+     | ^^^^^^^^^
+> 86 |       const pool = await idbGetHiddenPoolNames()
+     | ^^^^^^^^^
+> 87 |       setHiddenPool(pool)
+     | ^^^^^^^^^
+> 88 |     } catch {
+     | ^^^^^^^^^
+> 89 |       setHiddenPool([])
+     | ^^^^^^^^^
+> 90 |     }
+     | ^^^^^^^^^
+> 91 |   }, [])
+     | ^^^^^^^^^ `loadHiddenPool` is declared here
+  92 |
+  93 |   // ── Activate disguise ──
+  94 |   const activateDisguise = useCallback(() => {  react-hooks/immutability
+
+/app/applet/src/lib/useDeviceMedia.ts
+  143:28  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+✖ 44 problems (39 errors, 5 warnings)
+

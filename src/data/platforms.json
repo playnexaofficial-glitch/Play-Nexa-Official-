@@ -1,0 +1,98 @@
+[
+  {
+    "id": "netflix",
+    "name": "Netflix",
+    "color": "#E50914",
+    "url": "https://netflix.com",
+    "tagline": "Watch Anywhere. Cancel Anytime.",
+    "icon": "Play",
+    "collections": [
+      "Netflix Originals",
+      "Trending Now",
+      "New Releases",
+      "Top 10 Today"
+    ]
+  },
+  {
+    "id": "disney",
+    "name": "Disney+",
+    "color": "#113CCF",
+    "url": "https://disneyplus.com",
+    "tagline": "All your favorites in one place.",
+    "icon": "Star",
+    "collections": [
+      "Marvel Universe",
+      "Star Wars",
+      "Disney Classics",
+      "Pixar Collection"
+    ]
+  },
+  {
+    "id": "prime",
+    "name": "Prime Video",
+    "color": "#00A8E0",
+    "url": "https://primevideo.com",
+    "tagline": "Watch. Anywhere.",
+    "icon": "Video",
+    "collections": [
+      "Prime Originals",
+      "Trending on Prime",
+      "Award Winners",
+      "Free with Prime"
+    ]
+  },
+  {
+    "id": "crunchyroll",
+    "name": "Crunchyroll",
+    "color": "#F47521",
+    "url": "https://crunchyroll.com",
+    "tagline": "The World's Largest Anime Library.",
+    "icon": "Tv",
+    "collections": [
+      "Simulcasts",
+      "Popular Anime",
+      "New This Season",
+      "Classic Anime"
+    ]
+  },
+  {
+    "id": "tubi",
+    "name": "Tubi",
+    "color": "#FA500F",
+    "url": "https://tubitv.com",
+    "tagline": "Watch Free Movies & TV.",
+    "icon": "Film",
+    "collections": [
+      "Free Movies",
+      "Popular Shows",
+      "New Arrivals"
+    ]
+  },
+  {
+    "id": "plex",
+    "name": "Plex",
+    "color": "#E5A00D",
+    "url": "https://plex.tv",
+    "tagline": "Stream. Share. Enjoy.",
+    "icon": "Monitor",
+    "collections": [
+      "Free Movies",
+      "Live TV",
+      "Your Media"
+    ]
+  },
+  {
+    "id": "youtube-movies",
+    "name": "YouTube Movies",
+    "color": "#FF0000",
+    "url": "https://youtube.com/feed/storefront",
+    "tagline": "Free Movies on YouTube.",
+    "icon": "Youtube",
+    "collections": [
+      "Free Full Movies",
+      "Hindi Dubbed",
+      "Anime Movies",
+      "Trending Free"
+    ]
+  }
+]
