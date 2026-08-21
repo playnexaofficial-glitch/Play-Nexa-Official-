@@ -46,9 +46,12 @@ export async function GET(req: NextRequest) {
 
   const seen = new Set<string>()
   const merged: any[] = []
-  for (const m of [
-    ...(t1||[]), ...(t2||[]), ...(t3||[])
-  ]) {
+  const combined = [
+    ...(t1 as any[] || []), 
+    ...(t2 as any[] || []), 
+    ...(t3 as any[] || [])
+  ]
+  for (const m of combined) {
     if (!seen.has(m.id)) {
       seen.add(m.id)
       merged.push(m)
