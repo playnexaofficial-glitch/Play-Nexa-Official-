@@ -38,7 +38,7 @@ export async function POST() {
     }, {} as Record<string, number>)
 
     const topIssues = Object.entries(byCategory)
-      .sort((a, b) => b[1] - a[1])
+      .sort((a: any, b: any) => b[1] - a[1])
       .slice(0, 5)
       .map(([cat, count]) => ({
         category: cat,
