@@ -11,7 +11,10 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 
 // ── Env vars ──
 
-const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY || ''
+const YOUTUBE_API_KEY = 
+  process.env.YOUTUBE_API_KEY || 
+  process.env.NEXT_PUBLIC_YOUTUBE_API_KEY || 
+  ''
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || ''
 
 // ── Auth check ──
@@ -292,10 +295,9 @@ export async function POST(request: NextRequest) {
     }
 
     if (!YOUTUBE_API_KEY) {
-      return NextResponse.json(
-        { error: 'YouTube API key not configured. Add NEXT_PUBLIC_YOUTUBE_API_KEY to .env.local' },
-        { status: 500 }
-      )
+      return NextResponse.json({
+        error: 'YouTube API key not configured. In Vercel: add YOUTUBE_API_KEY to Environment Variables and redeploy.'
+      }, { status: 500 })
     }
 
     // ── Step 1: Resolve channel URL to channel ID ──
@@ -537,6 +539,6 @@ export async function GET(req: NextRequest) {
     configured: !!YOUTUBE_API_KEY,
     message: YOUTUBE_API_KEY
       ? 'YouTube API key is configured'
-      : 'Add NEXT_PUBLIC_YOUTUBE_API_KEY to .env.local',
+      : 'YouTube API key not configured. In Vercel: add YOUTUBE_API_KEY to Environment Variables and redeploy.',
   })
 }

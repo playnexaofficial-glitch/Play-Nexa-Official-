@@ -17,6 +17,7 @@ import TrackRow from
   '@/components/ytmusic/TrackRow'
 import MoodChips from
   '@/components/ytmusic/MoodChips'
+import PageLoader from '@/components/ui/PageLoader'
 
 // Mood/filter definitions — NO emojis
 const MOODS = [
@@ -156,6 +157,8 @@ export default function YTMusicPage() {
     if (h < 21) return 'Good Evening'
     return 'Good Night'
   }
+
+  if (isLoading) return <PageLoader />
 
   return (
     <div className="min-h-screen bg-[#0D0D0D]

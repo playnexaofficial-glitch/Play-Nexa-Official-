@@ -453,6 +453,23 @@ export default function ChannelsPage() {
         </div>
       </div>
 
+      <div style={{
+        backgroundColor: '#1A1A2E',
+        border: '1px solid #2D2D44',
+        borderRadius: 12,
+        padding: '12px 16px',
+        marginBottom: 16,
+        fontSize: 12,
+        color: '#9CA3AF',
+        fontFamily: 'system-ui, sans-serif',
+        lineHeight: 1.8,
+      }}>
+        <strong style={{ color: '#FFFFFF' }}>Channel Stats Guide:</strong><br/>
+        On Channel = Total videos on the YouTube channel<br/>
+        Imported = Videos imported into Play Nexa<br/>
+        Remaining = Videos not yet imported (On Channel - Imported)
+      </div>
+
       {loading ? (
         <div className="flex justify-center py-12">
           <div className="w-8 h-8 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin" />

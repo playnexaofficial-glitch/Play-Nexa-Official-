@@ -122,7 +122,7 @@ export const universalSearch = (
   })
 
   // Search games (wrapped in { games: [...] })
-  gamesData.games.forEach((g: any) => {
+  ;(gamesData.games as any[]).forEach((g: any) => {
     if (
       g.title.toLowerCase().includes(q) ||
       g.category?.toLowerCase().includes(q) ||

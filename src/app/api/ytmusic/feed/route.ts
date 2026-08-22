@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabase, isSupabaseReady } from '@/lib/supabase'
 
 export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 const FALLBACK_TRACKS = [
   {
@@ -61,7 +62,7 @@ export async function GET(req: NextRequest) {
         newReleases: FALLBACK_TRACKS,
         recommended: FALLBACK_TRACKS,
         recentlyPlayed: [],
-      })
+      }, { headers: { 'Cache-Control': 's-maxage=60, stale-while-revalidate=300' } })
     }
 
     // Test basic connection first
@@ -78,7 +79,7 @@ export async function GET(req: NextRequest) {
         newReleases: FALLBACK_TRACKS,
         recommended: FALLBACK_TRACKS,
         recentlyPlayed: [],
-      })
+      }, { headers: { 'Cache-Control': 's-maxage=60, stale-while-revalidate=300' } })
     }
 
     console.log('[ytmusic/feed] Connection test: OK, count:', (testData ? (testData as any).count : 'unknown'))
@@ -91,8 +92,32 @@ export async function GET(req: NextRequest) {
       .order('created_at', { ascending: false })
       .limit(20)
 
-    if (mood !== 'all') {
-      quickQuery = quickQuery.ilike('title', `%${mood}%`)
+    if (mood === 'new') {
+      // Last 30 days
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
+      quickQuery = quickQuery.gte('created_at', thirtyDaysAgo)
+    } else if (mood === 'hot') {
+      // Sort by view_count if available
+      quickQuery = supabase
+        .from('music_tracks')
+        .select('id,youtube_id,title,thumbnail,channel_name,channel_id,created_at')
+        .eq('is_hidden', false)
+        .order('created_at', { ascending: false })
+        .limit(20)
+    } else if (['bangla', 'hindi', 'happy', 'sad', 'romantic', 'lofi', 'remix'].includes(mood)) {
+      // Search by mood field OR title contains mood word OR channel name
+      const moodWords: Record<string, string[]> = {
+        bangla: ['bangla', 'bengali', 'বাংলা'],
+        hindi: ['hindi', 'bollywood', 'हिंदी'],
+        happy: ['happy', 'upbeat', 'fun', 'party'],
+        sad: ['sad', 'emotional', 'heart', 'cry', 'broken'],
+        romantic: ['romantic', 'love', 'romance', 'pyar'],
+        lofi: ['lofi', 'lo-fi', 'chill', 'study', 'relax'],
+        remix: ['remix', 'dj', 'mashup', 'mix'],
+      }
+      const words = moodWords[mood] || [mood]
+      // Use the first word for ilike (Supabase doesn't support OR ilike easily)
+      quickQuery = quickQuery.ilike('title', `%${words[0]}%`)
     }
     const { data: quickPicks } = await quickQuery
 
@@ -256,7 +281,7 @@ export async function GET(req: NextRequest) {
       newReleases: newReleases.length > 0 ? newReleases : FALLBACK_TRACKS,
       recommended: recommended.length > 0 ? recommended : FALLBACK_TRACKS,
       recentlyPlayed,
-    })
+    }, { headers: { 'Cache-Control': 's-maxage=60, stale-while-revalidate=300' } })
   } catch (err: any) {
     console.log('[ytmusic/feed] Exception, serving fallback:', err?.message)
     return NextResponse.json({
@@ -265,7 +290,7 @@ export async function GET(req: NextRequest) {
       newReleases: FALLBACK_TRACKS,
       recommended: FALLBACK_TRACKS,
       recentlyPlayed: [],
-    })
+    }, { headers: { 'Cache-Control': 's-maxage=60, stale-while-revalidate=300' } })
   }
 }
 

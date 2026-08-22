@@ -65,8 +65,16 @@ export default function VideoPlayer({ src, title, onClose }: VideoPlayerProps) {
   const togglePlay = useCallback(() => {
     const v = videoRef.current
     if (!v) return
-    if (playing) { v.pause(); setPlaying(false) }
-    else { v.play().catch(() => {}); setPlaying(true) }
+    if (playing) {
+      v.pause()
+      setPlaying(false)
+    } else {
+      setPlaying(true)
+      v.play().catch((err) => {
+        // If autoplay fails, show play button again
+        setPlaying(false)
+      })
+    }
     resetHide()
   }, [playing, resetHide])
 
@@ -167,26 +175,6 @@ export default function VideoPlayer({ src, title, onClose }: VideoPlayerProps) {
     setTimeout(() => setGestureIndicator(null), 800)
   }, [])
 
-  // ── Video event listeners ──
-  useEffect(() => {
-    const v = videoRef.current
-    if (!v) return
-
-    const onTime = () => setCurrent(v.currentTime)
-    const onDur = () => setDuration(v.duration)
-    const onEnd = () => { setPlaying(false); setCurrent(0) }
-
-    v.addEventListener('timeupdate', onTime)
-    v.addEventListener('loadedmetadata', onDur)
-    v.addEventListener('ended', onEnd)
-
-    return () => {
-      v.removeEventListener('timeupdate', onTime)
-      v.removeEventListener('loadedmetadata', onDur)
-      v.removeEventListener('ended', onEnd)
-    }
-  }, [src])
-
   // Cleanup timer + video element on unmount
   useEffect(() => {
     return () => {
@@ -212,11 +200,27 @@ export default function VideoPlayer({ src, title, onClose }: VideoPlayerProps) {
       <video
         ref={videoRef}
         src={src}
-        className={`w-full h-full ${aspectClass}`}
-        style={{ filter: `brightness(${brightness}%)` }}
         playsInline
+        muted={false}
         preload="metadata"
         onClick={togglePlay}
+        onTimeUpdate={() => {
+          const v = videoRef.current
+          if (v) setCurrent(v.currentTime)
+        }}
+        onDurationChange={() => {
+          const v = videoRef.current
+          if (v) setDuration(v.duration || 0)
+        }}
+        onEnded={() => {
+          setPlaying(false)
+          setCurrent(0)
+        }}
+        onLoadedMetadata={() => {
+          const v = videoRef.current
+          if (v) setDuration(v.duration || 0)
+        }}
+        style={{ width: '100%', height: '100%', objectFit: aspectMode === 'fill' ? 'cover' : 'contain' }}
       />
 
       {/* ── GESTURE INDICATOR ── */}

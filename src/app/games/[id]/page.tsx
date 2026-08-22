@@ -12,7 +12,7 @@ import {
 import gamesData from '@/data/games.json'
 import GameCard from '@/components/games/GameCard'
 
-const games = gamesData.games
+const games = gamesData.games as any[]
 
 export default function GamePlayerPage(
   { params }: { params: Promise<{ id: string }> }

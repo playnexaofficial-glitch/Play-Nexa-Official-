@@ -55,6 +55,7 @@
 }
 
 :root {
+  --bg-base: #0D0D0D;
   --radius: 0.625rem;
   --background: #0D0D0D;
   --foreground: #FFFFFF;
@@ -447,7 +448,8 @@ input[type="range"]::-moz-range-thumb {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-pn-bg text-foreground;
+    background-color: var(--bg-base);
+    @apply text-foreground;
     font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   }
 }
@@ -802,4 +804,13 @@ html.light-mode picture {
 }
 .pn-buffer-ring {
   animation: pn-buffer-ring 900ms linear infinite;
+}
+
+/* Play Nexa PageLoader — GPU safe keyframes */
+@keyframes pn-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes pn-bounce {
+  0%,80%,100% { transform: translateY(0);   opacity: 0.4; }
+  40%          { transform: translateY(-8px); opacity: 1;   }
 }

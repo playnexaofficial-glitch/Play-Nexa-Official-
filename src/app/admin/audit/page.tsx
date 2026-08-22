@@ -7,6 +7,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { History, Search, Filter, Eye, X, Calendar, RefreshCw, UserCheck, ShieldAlert } from 'lucide-react'
 import { logActivity } from '@/lib/adminAuth'
+import { safeJSONStringify } from '@/lib/safeStringify'
 
 interface AuditLog {
   id: string
@@ -296,7 +297,7 @@ export default function AuditLogsPage() {
               <div>
                 <p className="text-xs text-gray-500 font-medium mb-1">RAW JSON DETAILS payload</p>
                 <pre className="bg-[#121214] p-3 rounded-xl text-xs font-mono text-[#10B981] overflow-x-auto border border-[#1F1F23] max-h-52">
-                  {JSON.stringify(selectedLog.details || {}, null, 2)}
+                  {safeJSONStringify(selectedLog.details || {}, 2)}
                 </pre>
               </div>
             </div>

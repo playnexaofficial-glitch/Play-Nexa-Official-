@@ -55,10 +55,10 @@ export default function HelpPage() {
             কোনো সমস্যা হলে আমাদের ইমেইল করো। আমরা 24 ঘন্টার মধ্যে উত্তর দেওয়ার চেষ্টা করি।
           </p>
           <a
-            href="mailto:support@playnexa.app"
+            href="mailto:playnexaofficial@gmail.com?subject=Play%20Nexa%20Support"
             className="inline-flex items-center gap-2 h-11 px-5 bg-[#7C3AED] rounded-xl text-white text-sm font-medium active:opacity-80"
           >
-            ✉️ Email Support
+            Email Support
           </a>
         </div>
 
@@ -108,8 +108,32 @@ export default function HelpPage() {
             Version 1.0.0 • 100% Free • No Ads • No Subscription
           </p>
           <p className="text-[#9CA3AF] text-xs leading-relaxed mt-2">
-            Made with ❤️ for entertainment lovers everywhere.
+            Made with love for entertainment lovers everywhere.
           </p>
+        </div>
+
+        <div style={{
+          margin: '24px 0',
+          padding: 16,
+          backgroundColor: '#1A1A2E',
+          borderRadius: 16,
+          border: '1px solid #2D2D44',
+        }}>
+          <p style={{ color: '#9CA3AF', fontSize: 13, fontFamily: 'system-ui, sans-serif', marginBottom: 8 }}>
+            Still need help?
+          </p>
+          <a
+            href="mailto:playnexaofficial@gmail.com?subject=Play%20Nexa%20Support"
+            style={{
+              color: '#7C3AED',
+              fontSize: 14,
+              fontWeight: 600,
+              fontFamily: 'system-ui, sans-serif',
+              textDecoration: 'none',
+            }}
+          >
+            playnexaofficial@gmail.com
+          </a>
         </div>
       </div>
     </div>

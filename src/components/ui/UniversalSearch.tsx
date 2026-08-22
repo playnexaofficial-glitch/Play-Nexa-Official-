@@ -286,7 +286,7 @@ export default function UniversalSearch(
             {fetchError && (
               <div className="bg-red-500/10 border border-red-500/20
                               rounded-xl p-3 mb-4 text-xs text-red-400">
-                ⚠️ Live search failed: {fetchError}. Showing local results only.
+                Live search failed: {fetchError}. Showing local results only.
               </div>
             )}
 

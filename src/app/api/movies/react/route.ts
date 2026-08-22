@@ -12,7 +12,8 @@ export async function POST(req: NextRequest) {
   try {
     const {
       action, userId, movieId, youtubeId,
-      reaction, playlistId, playlistName
+      reaction, playlistId, playlistName,
+      channelId, channelName
     } = await req.json()
 
     if (!userId || !movieId) {
@@ -101,6 +102,27 @@ export async function POST(req: NextRequest) {
               onConflict: 'user_id,video_id'
             })
           return NextResponse.json({ reaction })
+        }
+      }
+
+      case 'subscribe': {
+        if (!channelId) return NextResponse.json({ error: 'channelId required' }, { status: 400 })
+        const { data: existing } = await supabase
+          .from('followed_channels')
+          .select('id')
+          .eq('user_id', userId)
+          .eq('channel_id', channelId)
+          .maybeSingle()
+        if (existing) {
+          await supabase.from('followed_channels').delete().eq('id', existing.id)
+          return NextResponse.json({ subscribed: false })
+        } else {
+          await supabase.from('followed_channels').insert([{
+            user_id: userId,
+            channel_id: channelId,
+            channel_name: channelName || '',
+          }])
+          return NextResponse.json({ subscribed: true })
         }
       }
 

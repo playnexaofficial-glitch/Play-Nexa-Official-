@@ -38,10 +38,6 @@ export function useAudioPlayer() {
     const audio = new Audio()
     audio.preload = 'metadata'
 
-    // CRITICAL for Android WebView:
-    // These attributes prevent playback issues
-    audio.crossOrigin = 'anonymous'
-
     audio.addEventListener('timeupdate', () => {
       setCurrentTime(audio.currentTime || 0)
     })
@@ -77,22 +73,25 @@ export function useAudioPlayer() {
 
     audio.addEventListener('error', (e) => {
       const err = audio.error
-      let msg = 'Cannot play this file'
+      let msg = 'Playback failed'
       if (err) {
-        switch (err.code) {
-          case 1: msg = 'Playback aborted'; break
-          case 2: msg = 'Network error'; break
-          case 3: msg = 'Decode error — ' +
-            'file may be corrupted'; break
-          case 4: msg = 'File not supported ' +
-            'or not accessible'; break
+        switch(err.code) {
+          case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+            msg = 'File format not supported on this device'
+            break
+          case MediaError.MEDIA_ERR_DECODE:
+            msg = 'File is corrupted or cannot be decoded'
+            break
+          case MediaError.MEDIA_ERR_NETWORK:
+            msg = 'Network error loading file'
+            break
+          default:
+            msg = 'Playback failed'
         }
       }
-      console.error('[AudioPlayer] Error:',
-        msg, err?.code, audio.src)
       setError(msg)
-      setIsPlaying(false)
       setIsLoading(false)
+      setIsPlaying(false)
     })
 
     audio.addEventListener('waiting', () => {
@@ -137,20 +136,30 @@ export function useAudioPlayer() {
     console.log('[AudioPlayer] Loading:',
       currentTrack.title, currentTrack.uri)
 
-    // Try the URI directly first
-    // On Capacitor Android, uri should work
     const src = currentTrack.uri
 
-    // Remove any existing src
-    audio.pause()
-    audio.removeAttribute('src')
-    audio.load()
+    // Define a function to load the source
+    const loadSource = () => {
+      audio.pause()
+      audio.removeAttribute('src')
+      audio.load()
+      audio.src = src
+      audio.load()
+      console.log('[AudioPlayer] Set src:', src)
+    }
 
-    // Set new src
-    audio.src = src
-    audio.load()
-
-    console.log('[AudioPlayer] Set src:', src)
+    if (src.startsWith('blob:')) {
+      fetch(src, { method: 'HEAD' })
+        .then(() => {
+          loadSource()
+        })
+        .catch(() => {
+          setError('Playback failed: Session expired')
+          setIsLoading(false)
+        })
+    } else {
+      loadSource()
+    }
 
   }, [currentIndex, currentTrack?.uri])
 
@@ -164,7 +173,7 @@ export function useAudioPlayer() {
       await audio.play()
       console.log('[AudioPlayer] Play success')
     } catch (e: any) {
-      console.error('[AudioPlayer] Play failed:',
+      console.warn('[AudioPlayer] Play failed:',
         e.message)
       setError('Playback failed: ' + e.message)
       setIsPlaying(false)

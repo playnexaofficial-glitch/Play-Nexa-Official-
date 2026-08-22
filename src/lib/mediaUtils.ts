@@ -197,9 +197,11 @@ export function generateVideoThumbnail(
     video.preload = 'auto'
     video.muted = true
     video.playsInline = true
-    video.crossOrigin = 'anonymous'
 
     const url = file ? URL.createObjectURL(file) : filePath
+    if (!url.startsWith('blob:') && !url.startsWith('data:')) {
+      video.crossOrigin = 'anonymous'
+    }
     video.src = url
 
     const cleanup = () => {
@@ -461,6 +463,8 @@ export function debounce<T extends (...args: any[]) => void>(
 // LOCAL STORAGE HELPERS (pn_ prefixed)
 // ══════════════════════════════════════════════════════════════
 
+import { safeJSONStringify } from './safeStringify'
+
 export function lsGet<T>(key: string, fallback: T): T {
   try {
     const raw = localStorage.getItem(key)
@@ -473,7 +477,7 @@ export function lsGet<T>(key: string, fallback: T): T {
 
 export function lsSet(key: string, value: any): void {
   try {
-    localStorage.setItem(key, JSON.stringify(value))
+    localStorage.setItem(key, safeJSONStringify(value))
   } catch {
     // localStorage quota exceeded or unavailable
   }

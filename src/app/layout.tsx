@@ -5,6 +5,7 @@ import BottomNav from "@/components/layout/BottomNav";
 import OfflineIndicator from "@/components/OfflineIndicator";
 import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
 import FeedbackWidget from "@/components/feedback/FeedbackWidget";
+import { MusicStoreProvider } from "@/lib/musicPlayerStore";
 
 
 const inter = Inter({
@@ -93,16 +94,11 @@ export const metadata: Metadata = {
   },
   manifest: '/manifest.json',
   icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
-    ],
-    apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-    ],
-    shortcut: '/favicon.ico',
+    icon: '/icons/icon-512.png',
+    apple: '/icons/icon-512.png',
+    shortcut: '/icons/icon-512.png',
   },
+  themeColor: '#CC0000',
 };
 
 export const viewport: Viewport = {
@@ -110,7 +106,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#E50000",
+  themeColor: "#CC0000",
 };
 
 export default function RootLayout({
@@ -122,12 +118,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+        <link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192" />
+        <link rel="apple-touch-icon" href="/icons/icon-512.png" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#E50000" />
-        <meta name="msapplication-TileColor" content="#E50000" />
-        <meta name="msapplication-TileImage" content="/icon-192.png" />
+        <meta name="theme-color" content="#CC0000" />
+        <meta name="msapplication-TileColor" content="#CC0000" />
+        <meta name="msapplication-TileImage" content="/icons/icon-512.png" />
         <meta name="mobile-web-app-capable" content="yes" />
         <script
           type="application/ld+json"
@@ -180,15 +176,18 @@ export default function RootLayout({
       </head>
       <body
         className={`${inter.variable} antialiased bg-pn-bg text-white min-h-screen`}
+        style={{ WebkitTapHighlightColor: 'transparent' }}
       >
-        <OfflineIndicator />
-        <ServiceWorkerRegistrar />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <BottomNav />
-        <FeedbackWidget />
+        <MusicStoreProvider>
+          <OfflineIndicator />
+          <ServiceWorkerRegistrar />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <BottomNav />
+          <FeedbackWidget />
+        </MusicStoreProvider>
       </body>
-    </html>
+      </html>
   );
 }

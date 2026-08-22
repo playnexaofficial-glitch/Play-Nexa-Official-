@@ -190,7 +190,7 @@ export default function DownloadHome() {
           {/* Invalid URL warning */}
           {url && !isValidUrl(url) && (
             <p className="text-red-400 text-xs mt-2">
-              ⚠️ Valid URL দাও (https:// দিয়ে শুরু হতে হবে)
+              Valid URL দাও (https:// দিয়ে শুরু হতে হবে)
             </p>
           )}
         </div>

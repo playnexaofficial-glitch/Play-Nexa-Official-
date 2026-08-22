@@ -50,9 +50,9 @@ export default function OfflineIndicator() {
       }}
     >
       {isOffline ? (
-        <span>📡 You&apos;re offline — cached content still available</span>
+        <span>You&apos;re offline — cached content still available</span>
       ) : (
-        <span>✅ Back online</span>
+        <span>Back online</span>
       )}
     </div>
   )

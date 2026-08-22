@@ -55,6 +55,14 @@ export default function ProfilePage() {
     return localStorage.getItem('pn_notif_enabled') === 'true'
   })
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false)
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), 2500)
+      return () => clearTimeout(timer)
+    }
+  }, [toastMessage])
 
   // Load Firebase user
   useEffect(() => {
@@ -147,6 +155,7 @@ export default function ProfilePage() {
         await navigator.share(shareData)
       } else {
         await navigator.clipboard.writeText(shareData.url)
+        setToastMessage('Link copied to clipboard')
       }
     } catch {}
   }
@@ -300,20 +309,21 @@ export default function ProfilePage() {
 
       {/* Stats Row */}
       <div className="mx-4 mb-6 bg-[#1A1A2E] border border-[#2D2D44] rounded-2xl overflow-hidden">
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-4">
           {[
             { label: 'Saved', value: stats.saved },
             { label: 'Played', value: stats.played },
+            { label: 'Liked', value: stats.liked },
             { label: 'Downloads', value: stats.downloads },
           ].map((s, i) => (
             <div
               key={s.label}
               className={`flex flex-col items-center py-4 ${
-                i < 2 ? 'border-r border-[#2D2D44]' : ''
+                i < 3 ? 'border-r border-[#2D2D44]' : ''
               }`}
             >
-              <span className="text-2xl font-bold text-white mb-0.5">{s.value}</span>
-              <span className="text-[#9CA3AF] text-xs">{s.label}</span>
+              <span className="text-xl font-bold text-white mb-0.5">{s.value}</span>
+              <span className="text-[#9CA3AF] text-[10px]">{s.label}</span>
             </div>
           ))}
         </div>
@@ -457,12 +467,7 @@ export default function ProfilePage() {
           </button>
 
           <button
-            onClick={() => {
-              window.open(
-                'mailto:playnexaofficial@gmail.com?subject=Play%20Nexa%20Support',
-                '_blank'
-              )
-            }}
+            onClick={() => router.push('/help')}
             className="w-full flex items-center gap-3 px-4 min-h-[52px] border-b border-[#0D0D0D] active:opacity-60 transition-opacity duration-150"
           >
             <HelpCircle size={18} color="#9CA3AF" strokeWidth={1.8} />
@@ -474,7 +479,7 @@ export default function ProfilePage() {
           </button>
 
           <button
-            onClick={() => router.push('/settings')}
+            onClick={() => setToastMessage('Coming soon')}
             className="w-full flex items-center gap-3 px-4 min-h-[52px] border-b border-[#0D0D0D] active:opacity-60 transition-opacity duration-150"
           >
             <Star size={18} color="#9CA3AF" strokeWidth={1.8} />
@@ -543,6 +548,11 @@ export default function ProfilePage() {
             </button>
           </div>
         </>
+      )}
+      {toastMessage && (
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 bg-[#1A1A2E] border border-[#2D2D44] text-white px-4 py-2.5 rounded-xl text-xs font-medium z-50 shadow-lg pn-page-enter">
+          {toastMessage}
+        </div>
       )}
     </div>
   )

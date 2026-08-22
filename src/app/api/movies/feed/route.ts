@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabase, isSupabaseReady } from '@/lib/supabase'
 
 export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 const FALLBACK_MOVIES = [
   {
@@ -43,7 +44,7 @@ export async function GET(req: NextRequest) {
         newReleases: FALLBACK_MOVIES,
         channelSections: [{ channelId: 'UC32J4vznHnlgexzgk8m1uOA', channelName: 'Blender Foundation', movies: FALLBACK_MOVIES }],
         channels: [{ id: 'UC32J4vznHnlgexzgk8m1uOA', name: 'Blender Foundation' }],
-      })
+      }, { headers: { 'Cache-Control': 's-maxage=60, stale-while-revalidate=300' } })
     }
 
     // Test basic connection first
@@ -60,7 +61,7 @@ export async function GET(req: NextRequest) {
         newReleases: FALLBACK_MOVIES,
         channelSections: [{ channelId: 'UC32J4vznHnlgexzgk8m1uOA', channelName: 'Blender Foundation', movies: FALLBACK_MOVIES }],
         channels: [{ id: 'UC32J4vznHnlgexzgk8m1uOA', name: 'Blender Foundation' }],
-      })
+      }, { headers: { 'Cache-Control': 's-maxage=60, stale-while-revalidate=300' } })
     }
 
     console.log('[movies/feed] Movies count:', count)
@@ -160,7 +161,7 @@ export async function GET(req: NextRequest) {
       newReleases: finalNewReleases,
       channelSections: finalChannelSections,
       channels: finalChannels,
-    })
+    }, { headers: { 'Cache-Control': 's-maxage=60, stale-while-revalidate=300' } })
   } catch (err: any) {
     console.log('[movies/feed] Exception, serving fallback:', err?.message)
     return NextResponse.json({
@@ -169,6 +170,6 @@ export async function GET(req: NextRequest) {
       newReleases: FALLBACK_MOVIES,
       channelSections: [{ channelId: 'UC32J4vznHnlgexzgk8m1uOA', channelName: 'Blender Foundation', movies: FALLBACK_MOVIES }],
       channels: [{ id: 'UC32J4vznHnlgexzgk8m1uOA', name: 'Blender Foundation' }],
-    })
+    }, { headers: { 'Cache-Control': 's-maxage=60, stale-while-revalidate=300' } })
   }
 }

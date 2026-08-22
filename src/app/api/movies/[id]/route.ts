@@ -35,16 +35,18 @@ export async function GET(
     if (!movie) return NextResponse.json(
       { error: 'Movie not found' }, { status: 404 })
 
-    // User state (liked, saved, reaction)
+    // User state (liked, saved, reaction, subscribed)
     let userState = {
       liked: false, saved: false,
-      reaction: null as string | null
+      reaction: null as string | null,
+      subscribed: false
     }
 
     if (userId) {
       const [{ data: likeData },
         { data: saveData },
-        { data: reactionData }] =
+        { data: reactionData },
+        { data: subscribedData }] =
         await Promise.all([
           supabase.from('user_likes')
             .select('id')
@@ -61,12 +63,18 @@ export async function GET(
             .eq('user_id', userId)
             .eq('video_id', id)
             .maybeSingle(),
+          supabase.from('followed_channels')
+            .select('id')
+            .eq('user_id', userId)
+            .eq('channel_id', movie.channel_id)
+            .maybeSingle(),
         ])
 
       userState = {
         liked: !!likeData,
         saved: !!saveData,
         reaction: reactionData?.reaction || null,
+        subscribed: !!subscribedData,
       }
 
       // Record watch history

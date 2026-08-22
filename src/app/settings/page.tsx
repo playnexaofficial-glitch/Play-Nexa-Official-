@@ -73,6 +73,20 @@ export default function SettingsPage() {
   const [resetInput, setResetInput] = useState('')
   const [showQualitySheet, setShowQualitySheet] = useState(false)
   const [showVideoQualitySheet, setShowVideoQualitySheet] = useState(false)
+  const [cacheClearSuccess, setCacheClearSuccess] = useState(false)
+
+  const handleClearCache = () => {
+    const keysToKeep = ['pn_settings', 'pn_notif_enabled']
+    const allKeys = Object.keys(localStorage)
+    for (const key of allKeys) {
+      if (!keysToKeep.includes(key)) {
+        localStorage.removeItem(key)
+      }
+    }
+    // Show success message (use state)
+    setCacheClearSuccess(true)
+    setTimeout(() => setCacheClearSuccess(false), 2000)
+  }
 
   // Scroll to section based on tab
   useEffect(() => {
@@ -447,23 +461,12 @@ export default function SettingsPage() {
 
           <div className="mt-3 space-y-2">
             <button
-              onClick={() => {
-                const keysToKeep = ['pn_settings', 'pn_notif_enabled', 'pn_theme']
-                const kept: Record<string, string> = {}
-                for (const k of keysToKeep) {
-                  const v = localStorage.getItem(k)
-                  if (v) kept[k] = v
-                }
-                localStorage.clear()
-                for (const [k, v] of Object.entries(kept)) {
-                  localStorage.setItem(k, v)
-                }
-                alert('Cache cleared')
-              }}
+              onClick={handleClearCache}
               className="w-full h-12 bg-[#1A1A2E] border border-[#2D2D44] rounded-xl text-white text-sm font-semibold active:opacity-60 transition-opacity duration-150"
             >
               Clear Cache
             </button>
+            {cacheClearSuccess && <p style={{ color: '#22C55E', fontSize: 13 }}>Cache cleared</p>}
 
             <button
               onClick={async () => {

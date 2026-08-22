@@ -153,7 +153,7 @@ export default function MusicLibraryPage() {
     <div className="min-h-screen relative flex flex-col" style={{ backgroundColor: '#0A0A0A' }}>
       
       {/* ── HEADER ── */}
-      <header className="flex items-center justify-between px-4 py-4 border-b border-[#1A1A1A] sticky top-0 z-30 bg-[#0A0A0A]/95 backdrop-blur-md">
+      <header className="flex items-center justify-between px-4 py-4 border-b border-[#1A1A1A] sticky top-0 z-30 bg-[#0A0A0A]">
         <div className="flex items-center gap-3">
           <button
             onClick={handleBack}
@@ -194,7 +194,7 @@ export default function MusicLibraryPage() {
       <main className="flex-1 overflow-y-auto px-4 py-4 pb-24">
         {scanError && (
           <div className="mb-4 p-3 bg-red-950/40 border border-red-800/30 rounded-xl text-red-400 text-xs">
-            ⚠️ {scanError}
+            {scanError}
           </div>
         )}
 
@@ -348,9 +348,20 @@ export default function MusicLibraryPage() {
 
             {/* Error or buffering displays */}
             {playError && (
-              <p className="text-red-400 text-xs mt-3 bg-red-950/30 px-3 py-1.5 border border-red-800/20 rounded-full">
-                ⚠️ {playError}
-              </p>
+              <div style={{
+                backgroundColor: '#1A1A2E',
+                border: '1px solid #2D2D44',
+                borderRadius: 12,
+                padding: '12px 16px',
+                margin: '8px 0',
+              }}>
+                <p style={{ color: '#EF4444', fontSize: 13, fontFamily: 'system-ui, sans-serif' }}>
+                  {playError}
+                </p>
+                <p style={{ color: '#6B7280', fontSize: 11, marginTop: 4, fontFamily: 'system-ui, sans-serif' }}>
+                  Try selecting the file again from your device
+                </p>
+              </div>
             )}
             {isBuffering && (
               <p className="text-violet-400 text-xs mt-3 animate-pulse">

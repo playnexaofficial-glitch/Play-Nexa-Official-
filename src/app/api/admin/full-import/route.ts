@@ -270,7 +270,10 @@ Example: 1:movie:0.9
 // ─── Main Import Handler ───
 
 async function runFullImport(channelDbId: string, channel: any) {
-  const ytKey = process.env.YOUTUBE_API_KEY
+  const ytKey =
+    process.env.YOUTUBE_API_KEY ||
+    process.env.NEXT_PUBLIC_YOUTUBE_API_KEY ||
+    ''
   const geminiKey = process.env.GEMINI_API_KEY
 
   if (!ytKey) {
@@ -282,7 +285,7 @@ async function runFullImport(channelDbId: string, channel: any) {
       musicAdded: 0,
       skipped: 0,
       duplicates: 0,
-      error: 'YOUTUBE_API_KEY not set in .env.local',
+      error: 'YouTube API key not configured. In Vercel: add YOUTUBE_API_KEY to Environment Variables and redeploy.',
     })
     return
   }

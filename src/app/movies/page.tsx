@@ -8,6 +8,8 @@ import FeaturedBanner from
 import MovieCard from
   '@/components/movies/MovieCard'
 
+import PageLoader from '@/components/ui/PageLoader'
+
 export default function MoviesPage() {
   const router = useRouter()
   const [userId, setUserId] = useState<
@@ -70,6 +72,8 @@ export default function MoviesPage() {
     }
   }, [feed.featured.length])
 
+  if (isLoading) return <PageLoader />
+
   return (
     <div className="min-h-screen bg-[#0D0D0D]
       pb-24">
@@ -108,17 +112,40 @@ export default function MoviesPage() {
             All
           </button>
           {feed.channels.map((ch: any) => (
-            <button key={ch.id}
-              onClick={() =>
-                setSelectedChannel(ch.id)}
-              className={`flex-shrink-0 px-4 py-1.5
-                rounded-full text-sm font-medium
-                min-h-[34px] transition-colors
-                duration-150 active:opacity-60
-                ${selectedChannel === ch.id
-                  ? 'bg-white text-black'
-                  : 'bg-[#1A1A2E] text-[#9CA3AF]'
-                }`}>
+            <button
+              key={ch.id}
+              onClick={() => setSelectedChannel(ch.id)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                flexShrink: 0,
+                padding: '6px 14px 6px 8px',
+                borderRadius: 999,
+                border: 'none',
+                cursor: 'pointer',
+                minHeight: 36,
+                backgroundColor: selectedChannel === ch.id ? '#FFFFFF' : '#1A1A2E',
+                color: selectedChannel === ch.id ? '#000000' : '#9CA3AF',
+                fontSize: 13,
+                fontWeight: 500,
+                fontFamily: 'system-ui, sans-serif',
+                transition: 'opacity 150ms',
+              }}
+            >
+              <img
+                src={`https://unavatar.io/youtube/${ch.id}`}
+                alt={ch.name}
+                loading="lazy"
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  backgroundColor: '#2D2D44',
+                  flexShrink: 0,
+                }}
+              />
               {ch.name}
             </button>
           ))}

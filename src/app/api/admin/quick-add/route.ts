@@ -202,6 +202,18 @@ Reply ONLY: movie OR music OR skip`
         { onConflict: 'channel_id' }
       )
 
+      // After successful insert, log for notification system
+      const contentType = finalCategory
+      try {
+        await supabaseAdmin.from('notifications_log').insert([{
+          title: `New ${contentType} imported`,
+          body: title,
+          sent_to: 'pending',
+          sent_count: 0,
+          sent_at: new Date().toISOString(),
+        }])
+      } catch {}
+
       return NextResponse.json({
         success: true,
         title,
@@ -240,6 +252,18 @@ Reply ONLY: movie OR music OR skip`
         .select('id')
         .single()
       if (error) throw error
+
+      // After successful insert, log for notification system
+      const contentType = finalCategory
+      try {
+        await supabaseAdmin.from('notifications_log').insert([{
+          title: `New ${contentType} imported`,
+          body: title,
+          sent_to: 'pending',
+          sent_count: 0,
+          sent_at: new Date().toISOString(),
+        }])
+      } catch {}
 
       return NextResponse.json({
         success: true,

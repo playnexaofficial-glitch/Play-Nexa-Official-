@@ -10,6 +10,7 @@ import { Search, X, Gamepad2 } from 'lucide-react'
 import { getSupabase, isSupabaseReady } from '@/lib/supabase'
 import GameCard, { type Game } from './GameCard'
 import GamePlayer from './GamePlayer'
+import PageLoader from '@/components/ui/PageLoader'
 
 // ── Tab Configuration ──────────────────────────────────────────
 
@@ -30,7 +31,7 @@ type TabKey = typeof TABS[number]['key']
 import gamesData from '@/data/games.json'
 
 function getFallbackGames(): Game[] {
-  return gamesData.games.map(g => ({
+  return (gamesData.games as any[]).map(g => ({
     id: g.id,
     name: g.title,
     description: null,
@@ -166,6 +167,8 @@ export default function GameHub() {
       />
     )
   }
+
+  if (isLoading) return <PageLoader />
 
   // ── Main Game Hub UI ──
   return (

@@ -139,7 +139,7 @@ export default function DashboardPage() {
 
       {/* Danger Zone Section */}
       <div className="mt-8 bg-red-900/10 border border-red-800/30 rounded-2xl p-5">
-        <p className="text-red-400 font-semibold text-sm mb-1">⚠️ Danger Zone</p>
+        <p className="text-red-400 font-semibold text-sm mb-1">Danger Zone</p>
         <p className="text-[#9CA3AF] text-xs mb-4">
           Clear all movies and music tracks. This cannot be undone.
         </p>
@@ -155,8 +155,8 @@ export default function DashboardPage() {
           {isClearing
             ? 'Clearing...'
             : clearConfirm
-            ? '⚠️ Confirm — Delete Everything'
-            : '🗑️ Clear All Movies & Music'}
+            ? 'Confirm — Delete Everything'
+            : 'Clear All Movies & Music'}
         </button>
         {clearConfirm && (
           <button

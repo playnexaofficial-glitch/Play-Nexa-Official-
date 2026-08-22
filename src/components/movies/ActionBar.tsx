@@ -1,70 +1,99 @@
 'use client'
 import { useState } from 'react'
-import { ThumbsUp, ThumbsDown, Share2,
-  Bookmark } from 'lucide-react'
+import { ThumbsUp, ThumbsDown, Share2, Bookmark } from 'lucide-react'
 
 interface Props {
-  movieId: string; youtubeId: string
-  title: string; userId: string | null
-  initialLiked: boolean; initialSaved: boolean
+  movieId: string
+  youtubeId: string
+  title: string
+  userId: string | null
+  initialLiked: boolean
+  initialSaved: boolean
   initialReaction: string | null
+  channelId?: string
+  channelName?: string
 }
 
 export default function ActionBar({
   movieId, youtubeId, title, userId,
-  initialLiked, initialSaved, initialReaction
+  initialLiked, initialSaved, initialReaction,
+  channelId, channelName,
 }: Props) {
   const [liked, setLiked] = useState(initialLiked)
   const [saved, setSaved] = useState(initialSaved)
-  const [reaction, setReaction] = useState<
-    string|null>(initialReaction)
-  const [isLoading, setIsLoading] = useState(false)
+  const [reaction, setReaction] = useState<string | null>(initialReaction)
+  const [subscribed, setSubscribed] = useState(false)
+  const [isBusy, setIsBusy] = useState(false)
 
-  const doAction = async (
-    action: string,
-    extra: any = {}
-  ) => {
-    if (!userId || isLoading) return
-    setIsLoading(true)
+  const doAction = async (action: string, extra: any = {}) => {
+    if (!userId || isBusy) return null
+    setIsBusy(true)
     try {
-      await fetch('/api/movies/react', {
+      const res = await fetch('/api/movies/react', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          action,
-          userId,
-          movieId,
-          youtubeId,
-          ...extra,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, userId, movieId, youtubeId, ...extra }),
       })
-    } catch {}
-    setIsLoading(false)
+      const data = await res.json()
+      return data
+    } catch {
+      return null
+    } finally {
+      setIsBusy(false)
+    }
   }
 
   const handleLike = async () => {
+    // Optimistic update
     const next = !liked
     setLiked(next)
-    await doAction('like')
+    const result = await doAction('like')
+    // Sync with server response
+    if (result !== null && result.liked !== undefined) {
+      setLiked(result.liked)
+    }
   }
 
   const handleSave = async () => {
     const next = !saved
     setSaved(next)
-    await doAction('save')
+    const result = await doAction('save')
+    if (result !== null && result.saved !== undefined) {
+      setSaved(result.saved)
+    }
   }
 
   const handleReact = async (r: string) => {
     const next = reaction === r ? null : r
     setReaction(next)
-    await doAction('react', { reaction: r })
+    const result = await doAction('react', { reaction: r })
+    if (result !== null && result.reaction !== undefined) {
+      setReaction(result.reaction)
+    }
+  }
+
+  const handleSubscribe = async () => {
+    if (!userId || !channelId) return
+    const next = !subscribed
+    setSubscribed(next)
+    try {
+      await fetch('/api/movies/react', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'subscribe',
+          userId,
+          movieId,
+          youtubeId,
+          channelId,
+          channelName,
+        }),
+      })
+    } catch {}
   }
 
   const handleShare = async () => {
-    const url =
-      `${window.location.origin}/movies/${movieId}`
+    const url = `${window.location.origin}/movies/${movieId}`
     try {
       if (navigator.share) {
         await navigator.share({ title, url })
@@ -74,90 +103,74 @@ export default function ActionBar({
     } catch {}
   }
 
-  return (
-    <div className="flex items-center gap-2
-      overflow-x-auto hide-scroll pb-1">
+  const btnBase: React.CSSProperties = {
+    display: 'flex', alignItems: 'center', gap: 6,
+    padding: '0 16px', height: 40, borderRadius: 999,
+    border: '1px solid #2D2D44', cursor: 'pointer',
+    fontSize: 13, flexShrink: 0,
+    fontFamily: 'system-ui, sans-serif',
+    transition: 'opacity 150ms',
+    backgroundColor: '#1A1A2E',
+  }
 
+  return (
+    <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 4 }}>
       {/* Like/Dislike pill */}
-      <div className="flex items-center
-        bg-[#1A1A2E] rounded-full overflow-hidden
-        flex-shrink-0 border border-[#2D2D44]">
+      <div style={{
+        display: 'flex', alignItems: 'center',
+        backgroundColor: '#1A1A2E', borderRadius: 999,
+        border: '1px solid #2D2D44', overflow: 'hidden', flexShrink: 0,
+      }}>
         <button
           onClick={() => handleReact('like')}
           disabled={!userId}
-          className={`flex items-center gap-1.5
-            px-4 h-10 border-r border-[#2D2D44]
-            active:opacity-60 disabled:opacity-40
-            transition-colors duration-150
-            ${reaction === 'like'
-              ? 'text-[#7C3AED]' : 'text-[#9CA3AF]'}`}>
-          <ThumbsUp size={16} strokeWidth={2}
-            fill={reaction === 'like'
-              ? 'currentColor' : 'none'}/>
+          style={{
+            ...btnBase, border: 'none', borderRight: '1px solid #2D2D44',
+            borderRadius: 0, backgroundColor: 'transparent',
+            color: reaction === 'like' ? '#7C3AED' : '#9CA3AF',
+          }}
+        >
+          <ThumbsUp size={16} fill={reaction === 'like' ? 'currentColor' : 'none'} />
         </button>
         <button
           onClick={() => handleReact('dislike')}
           disabled={!userId}
-          className={`flex items-center gap-1.5
-            px-4 h-10 active:opacity-60
-            disabled:opacity-40
-            transition-colors duration-150
-            ${reaction === 'dislike'
-              ? 'text-[#EF4444]' : 'text-[#9CA3AF]'}`}>
-          <ThumbsDown size={16} strokeWidth={2}
-            fill={reaction === 'dislike'
-              ? 'currentColor' : 'none'}/>
+          style={{
+            ...btnBase, border: 'none', borderRadius: 0,
+            backgroundColor: 'transparent',
+            color: reaction === 'dislike' ? '#EF4444' : '#9CA3AF',
+          }}
+        >
+          <ThumbsDown size={16} fill={reaction === 'dislike' ? 'currentColor' : 'none'} />
         </button>
       </div>
 
-      {/* Share */}
-      <button
-        onClick={handleShare}
-        className="flex items-center gap-2
-          px-4 h-10 bg-[#1A1A2E] border
-          border-[#2D2D44] rounded-full
-          text-[#9CA3AF] text-sm flex-shrink-0
-          active:opacity-60 transition-opacity duration-150">
-        <Share2 size={15} strokeWidth={2}/>
-        <span>Share</span>
+      {/* Like */}
+      <button onClick={handleLike} disabled={!userId} style={{
+        ...btnBase,
+        backgroundColor: liked ? 'rgba(124,58,237,0.15)' : '#1A1A2E',
+        borderColor: liked ? '#7C3AED' : '#2D2D44',
+        color: liked ? '#A78BFA' : '#9CA3AF',
+      }}>
+        <ThumbsUp size={15} fill={liked ? 'currentColor' : 'none'} />
+        {liked ? 'Liked' : 'Like'}
       </button>
 
       {/* Save */}
-      <button
-        onClick={handleSave}
-        disabled={!userId}
-        className={`flex items-center gap-2
-          px-4 h-10 rounded-full text-sm
-          flex-shrink-0 active:opacity-60
-          disabled:opacity-40 border
-          transition-colors duration-150
-          ${saved
-            ? 'bg-[#7C3AED]/15 border-[#7C3AED]' +
-              ' text-[#A78BFA]'
-            : 'bg-[#1A1A2E] border-[#2D2D44]' +
-              ' text-[#9CA3AF]'}`}>
-        <Bookmark size={15} strokeWidth={2}
-          fill={saved ? 'currentColor' : 'none'}/>
-        <span>{saved ? 'Saved' : 'Save'}</span>
+      <button onClick={handleSave} disabled={!userId} style={{
+        ...btnBase,
+        backgroundColor: saved ? 'rgba(124,58,237,0.15)' : '#1A1A2E',
+        borderColor: saved ? '#7C3AED' : '#2D2D44',
+        color: saved ? '#A78BFA' : '#9CA3AF',
+      }}>
+        <Bookmark size={15} fill={saved ? 'currentColor' : 'none'} />
+        {saved ? 'Saved' : 'Save'}
       </button>
 
-      {/* Like (heart style) */}
-      <button
-        onClick={handleLike}
-        disabled={!userId}
-        className={`flex items-center gap-2
-          px-4 h-10 rounded-full text-sm
-          flex-shrink-0 active:opacity-60
-          disabled:opacity-40 border
-          transition-colors duration-150
-          ${liked
-            ? 'bg-[#7C3AED]/15 border-[#7C3AED]' +
-              ' text-[#A78BFA]'
-            : 'bg-[#1A1A2E] border-[#2D2D44]' +
-              ' text-[#9CA3AF]'}`}>
-        <ThumbsUp size={15} strokeWidth={2}
-          fill={liked ? 'currentColor' : 'none'}/>
-        <span>{liked ? 'Liked' : 'Like'}</span>
+      {/* Share */}
+      <button onClick={handleShare} style={{ ...btnBase, color: '#9CA3AF' }}>
+        <Share2 size={15} />
+        Share
       </button>
     </div>
   )

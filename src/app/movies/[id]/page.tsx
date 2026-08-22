@@ -12,6 +12,39 @@ export default function WatchPage() {
     string|null>(null)
   const [data, setData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [subscribed, setSubscribed] = useState(false)
+
+  useEffect(() => {
+    if (data?.userState) {
+      setSubscribed(!!data.userState.subscribed)
+    }
+  }, [data])
+
+  const handleSubscribe = async () => {
+    if (!userId || !data?.movie?.channel_id) return
+    const next = !subscribed
+    setSubscribed(next)
+    try {
+      const res = await fetch('/api/movies/react', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'subscribe',
+          userId,
+          movieId: id,
+          youtubeId: data.movie.youtube_id,
+          channelId: data.movie.channel_id,
+          channelName: data.movie.channel_name,
+        }),
+      })
+      const result = await res.json()
+      if (result && typeof result.subscribed === 'boolean') {
+        setSubscribed(result.subscribed)
+      }
+    } catch {
+      setSubscribed(!next)
+    }
+  }
 
   useEffect(() => {
     import('@/lib/firebase').then(({ auth }) => {
@@ -126,6 +159,8 @@ export default function WatchPage() {
           initialLiked={userState.liked}
           initialSaved={userState.saved}
           initialReaction={userState.reaction}
+          channelId={movie.channel_id}
+          channelName={movie.channel_name}
         />
 
         {/* Channel Row */}
@@ -150,11 +185,15 @@ export default function WatchPage() {
             </p>
           </div>
           <button
-            className="px-4 py-2 rounded-full
-              bg-white text-black text-sm
-              font-semibold min-h-[36px]
-              active:opacity-80 transition-opacity duration-150">
-            Subscribe
+            onClick={handleSubscribe}
+            style={{ cursor: 'pointer' }}
+            className={`px-4 py-2 rounded-full text-sm font-semibold min-h-[36px] active:opacity-80 transition-all duration-150 ${
+              subscribed
+                ? 'bg-[#1A1A2E] text-[#9CA3AF] border border-[#2D2D44]'
+                : 'bg-white text-black'
+            }`}
+          >
+            {subscribed ? 'Subscribed' : 'Subscribe'}
           </button>
         </div>
 
