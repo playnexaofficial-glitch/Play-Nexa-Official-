@@ -130,6 +130,30 @@ export default function RootLayout({
         <meta name="msapplication-TileImage" content="/icon-192.png" />
         <meta name="mobile-web-app-capable" content="yes" />
         <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "Play Nexa",
+              "url": process.env.NEXT_PUBLIC_APP_URL
+                || "https://playnexa.vercel.app",
+              "description":
+                "Free movies, music and games. " +
+                "Watch Bangla & Hindi movies, " +
+                "listen to music for free.",
+              "applicationCategory":
+                "EntertainmentApplication",
+              "operatingSystem": "Android, Web",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              }
+            })
+          }}
+        />
+        <script
           dangerouslySetInnerHTML={{
             __html: `
               try {
